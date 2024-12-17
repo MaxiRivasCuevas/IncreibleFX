@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.SesionPaciente">
+    <children>
+        <AnchorPane prefHeight="72.0" prefWidth="600.0" style="-fx-background-color: #000080;">
+            <children>
+                <Label layoutX="37.0" layoutY="14.0" text="Usuario:" textFill="#e4d7d7" />
+                <Label layoutX="37.0" layoutY="36.0" text="Rut:" textFill="#e4d7d7" />
+                <Button fx:id="buttonCerrarSesion" layoutX="499.0" layoutY="23.0" mnemonicParsing="false" text="Cerrar Sesion" />
+                <Label fx:id="lableUsuario" layoutX="93.0" layoutY="14.0" text="Null" textFill="#e4d7d7" />
+            <Label fx:id="lableRut" layoutX="69.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
+            <Label layoutX="221.0" layoutY="36.0" text="Edad:" textFill="#e4d7d7" />
+            <Label fx:id="labelEdad" layoutX="251.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
+            <children>
+                <Label layoutX="33.0" layoutY="21.0" text="Citas Proximas:" textFill="#ece8e8" />
+                <Label fx:id="lableCitas" layoutX="33.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
+            <Label layoutX="209.0" layoutY="21.0" text="Enfermedades Cronicas:" textFill="#ece8e8" />
+            <Label layoutX="387.0" layoutY="21.0" text="Medico Tratante:" textFill="#ece8e8" />
+            <Label fx:id="lableEnfermedadesCronicas" layoutX="209.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
+            <Label fx:id="lableMedicoTrantante" layoutX="387.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
+            <Label layoutX="181.0" layoutY="272.0" text="Para Agendar Nueva Cita Hable con el Personal" textFill="#ece8e8" underline="true" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

@@ -3,30 +3,24 @@ package org.example.gestionclinica.clientes;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 
 public class Cita {
-
-	private String IDcita;
-	private String hora;
 	private String fecha;
+	private String hora;
 	private Paciente paciente;
 	private PersonalMedico medico;
 
-	public void agregarInfoPaciente(int nivelAcceso,Paciente paciente) {
+	public Cita(String fecha, String hora, Paciente paciente, PersonalMedico medico) {
+		this.fecha = fecha;
+		this.hora = hora;
+		this.paciente = paciente;
+		this.medico = medico;
+	}
+
+	public void agregarInfoPaciente(int nivelAcceso, Paciente paciente) {
 		if(nivelAcceso == 2) {
 
 		}else{
 			System.out.println("El nivel de acceso no es el requerido");
 		}
-	}
-
-	public void generarCita(PersonalMedico personalMedico,Paciente paciente){
-		String hora = null;
-		String fecha=null;
-		String IdCita=null;
-		this.IDcita=IdCita;
-		this.hora= hora;
-		this.fecha=fecha;
-		this.medico=personalMedico;
-		this.paciente=paciente;
 	}
 
 	public void agregarEnfermedadCronica(int nivelAcceso) {
@@ -45,5 +39,17 @@ public class Cita {
 		}else{
 			System.out.println("El nivel de acceso no es el requerido");
 		}
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	@Override
+	public String toString() {
+		return  "fecha: " + fecha + "\n" +
+				"hora: " + hora + "\n" +
+				"paciente: " + paciente.getNombre() + "\n" +
+				"medico: " + medico.getNombre() + "\n";
 	}
 }

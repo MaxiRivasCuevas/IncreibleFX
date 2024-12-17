@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.example.gestionclinica.RRHH.Funcionario;
 import org.example.gestionclinica.RRHH.PersonalAdmin;
 import org.example.gestionclinica.RRHH.PersonalMedico;
+import org.example.gestionclinica.clientes.Cita;
 import org.example.gestionclinica.clientes.Paciente;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,34 +26,6 @@ import java.util.concurrent.ExecutionException;
 
 public class Clinica {
 	private String nombre;
-
-	public static void main(String[] args) throws ExecutionException, InterruptedException {
-		inicializarFirebase();
-		Firestore db = FirestoreClient.getFirestore();
-		System.out.println("Coneccion a base de Datos Exitosa!");
-
-		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
-
-		for (Funcionario persona : funcionarios) {
-			System.out.println(persona.toString());
-		}
-
-		ArrayList<Paciente> pacientes = cargarDatosPacientes(db);
-
-		for (Paciente persona : pacientes) {
-			System.out.println(persona.toString());
-		}
-/*
-		String [][] arregloInicioSesion = crearArregloInicioSesion(funcionarios);
-
-		System.out.println("\n");
-		for (String [] sesion : arregloInicioSesion) {
-			System.out.println(sesion[0]);
-			System.out.println(sesion[1]);
-			System.out.println(sesion[2]);
-		}
-*/
-	}
 
 	public String infoRAW(String nombre) throws ExecutionException, InterruptedException {
 		String infoRAW = "";
@@ -83,7 +56,7 @@ public class Clinica {
 		}
 	}
 
-	public static ArrayList<Paciente> cargarDatosPacientes(Firestore db) throws ExecutionException, InterruptedException {
+	public static ArrayList<Paciente> cargarDatosPacientes(Firestore db,ArrayList<PersonalMedico> medicos) throws ExecutionException, InterruptedException {
 		ArrayList<Paciente> pacientes = new ArrayList<>();
 
 		ApiFuture<QuerySnapshot> query =db.collection("Pacientes").get();
@@ -96,7 +69,51 @@ public class Clinica {
 					, doubleToInt(document.getDouble("edad"))
 					, document.getString("enfermedadCronica")));
 		}
+		ArrayList<Cita> citas = cargarCitas(db, medicos, pacientes);
+		for (Paciente paciente : pacientes){
+			for (Cita cita : citas){
+				if (cita.getPaciente().getNombre().equals(paciente.getNombre())){
+					paciente.agregarCita(cita);
+					System.out.println("skere");
+					System.out.println(cita.toString());
+				}
+			}
+		}
 		return pacientes;
+	}
+
+	public static ArrayList<Cita> cargarCitas(Firestore db, ArrayList<PersonalMedico> medicos, ArrayList<Paciente> pacientes) throws ExecutionException, InterruptedException {
+		ArrayList<Cita> citas = new ArrayList<>();
+		ApiFuture<QuerySnapshot> query =db.collection("Citas").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents){
+			citas.add(new Cita(document.getString("fecha")
+					, document.getString("hora")
+					, encontrarPaciente(document.getString("Paciente"),pacientes)
+					, encontrarMedico(document.getString("Medico"), medicos)));
+		}
+		return  citas;
+	}
+
+	public static PersonalMedico encontrarMedico(String nombre, ArrayList<PersonalMedico> medicos){
+		PersonalMedico medico = null;
+		for (PersonalMedico actual : medicos){
+			if (actual.getNombre().equals(nombre)){
+				medico = actual;
+			}
+		}
+		return medico;
+	}
+
+	public static Paciente encontrarPaciente(String nombre, ArrayList<Paciente> pacientes){
+		Paciente paciente = null;
+		for (Paciente actual : pacientes){
+			if (actual.getNombre().equals(nombre)){
+				paciente = actual;
+			}
+		}
+		return paciente;
 	}
 
 	public static ArrayList<Funcionario> cargarDatosPersonal(Firestore db) throws ExecutionException, InterruptedException {
@@ -160,7 +177,7 @@ public class Clinica {
 		return resultado;
 	}
 
-	public static void cambioEscena(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes){
+	public static void cambioEscenaPA(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes, int nivelAcceso){
 		Parent root = null;
 		if (usuario != null){
 			try {
@@ -186,19 +203,69 @@ public class Clinica {
 		stage.show();
 	}
 
+	public static void cambioEscenaPaciente(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes){
+		Parent root = null;
+		if (usuario != null){
+			try {
+				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+				root = loader.load();
+				SesionPaciente sesionPaciente = loader.getController();
+				String Rut = null;
+				int edad = 0;
+				String citas = null;
+				String enfermedadesCronicas = null;
+				String medicoTrante = null;
+				for (Paciente paciente : pacientes) {
+					if (paciente.getNombre().equals(usuario)) {
+						Rut = paciente.getRUT();
+						edad = paciente.getEdad();
+						citas = paciente.citasToString();
+						enfermedadesCronicas = paciente.getEnfermedadCronica();
+						if (medicoTrante != null){medicoTrante = paciente.getMedicoTratante().getNombre();}
+						else {medicoTrante = "Ninguno";}
+					}
+				}
+				sesionPaciente.setInfo(usuario, Rut, edad, citas, enfermedadesCronicas, medicoTrante);
+				System.out.println(citas);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600,400));
+		stage.show();
+	}
+
 	public static void IniciarSesion(ActionEvent event, String usuario, String contrasena) throws ExecutionException, InterruptedException {
 		inicializarFirebase();
 		Firestore db = FirestoreClient.getFirestore();
 		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
-		ArrayList<Paciente> pacientes = cargarDatosPacientes(db);
+		ArrayList<Paciente> pacientes = cargarDatosPacientes(db, funcionariosQueSonMedicos(funcionarios));
 		boolean usuarioValido = false;
+		int nivelAcceso = 9;
 		for (Funcionario funcionario : funcionarios) {
 			if (funcionario.getNombre().equals(usuario) && ((PersonalAdmin) funcionario).contrasenaCorrecta(contrasena)) {
 				usuarioValido = true;
+				nivelAcceso = funcionario.getNivelAcceso();
 			}
 		}
-		if (usuarioValido) {
-			cambioEscena(event, "SesionPA.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
+		for (Paciente paciente : pacientes) {
+			if (paciente.getNombre().equals(usuario) && paciente.contrasenaCorrecta(contrasena)) {
+				usuarioValido = true;
+				nivelAcceso = 9;
+			}
+		}
+		if (usuarioValido && nivelAcceso == 1) {
+			cambioEscenaPA(event, "SesionPA.fxml", "Bienvenido!", usuario, funcionarios, pacientes, nivelAcceso);
+		} else if (usuarioValido && nivelAcceso == 9) {
+			cambioEscenaPaciente(event, "SesionPaciente.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
 		} else {
 			System.out.println("Usuario o Contraseña incorrecta");
 			Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -208,4 +275,14 @@ public class Clinica {
 	}
 
 	public static void IngresarNuevoUsuario(){}
+
+	public static ArrayList<PersonalMedico> funcionariosQueSonMedicos(ArrayList<Funcionario> funcionarios){
+		ArrayList<PersonalMedico> personalMedicos = new ArrayList<>();
+		for (Funcionario funcionario : funcionarios) {
+			if (funcionario.getClass() == PersonalMedico.class) {
+				personalMedicos.add((PersonalMedico) funcionario);
+			}
+		}
+		return personalMedicos;
+	}
 }

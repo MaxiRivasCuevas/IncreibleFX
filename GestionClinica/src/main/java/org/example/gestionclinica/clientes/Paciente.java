@@ -27,37 +27,14 @@ public class Paciente {
 		this.medicoTratante = medicoTratante;
 	}
 
-	public void agregarCita(int nivelAcceso) {
-		if(nivelAcceso<=2){
-			Cita citaTemporal = new Cita();
-			String RUT=null;
-			String nombre=null;
-			String contrasena=null;
-			String historial=null;
-			int edad = 0;
-			String enfermedadCronica=null;
-			Paciente paciente = new Paciente(RUT,nombre,contrasena,historial,edad,enfermedadCronica);
-			citaTemporal.generarCita(medicoTratante,paciente);
-			citas.add(citaTemporal);
-		}else {
-			System.out.println("El nivel de acceso no es el requerido");
-		}
+	public void agregarCita(Cita cita) {
+		this.citas.add(cita);
 	}
 
 	public void quitarCita(int nivelAcceso,int numCita) {
 		if(nivelAcceso<=2){
 			citas.remove((numCita-1));
 			System.out.println("Se removio la cita");
-		}else {
-			System.out.println("El nivel de acceso no es el requerido");
-		}
-	}
-
-	public void verCitas(int nivelAcceso) {
-		if(nivelAcceso<=2){
-			for (Cita cita:citas){
-				System.out.println(cita);
-			}
 		}else {
 			System.out.println("El nivel de acceso no es el requerido");
 		}
@@ -77,6 +54,14 @@ public class Paciente {
 		this.enfermedadCronica += info + "\n";
 	}
 
+	public String citasToString(){
+		String resultado = "";
+		for(Cita cita:citas) {
+			resultado += cita.toString();
+		}
+		return resultado;
+	}
+
 	@Override
 	public String toString() {
 		return "Paciente{" +
@@ -88,5 +73,29 @@ public class Paciente {
 				", enfermedadCronica='" + enfermedadCronica + '\'' +
 				", medicoTratante=" + medicoTratante +
 				'}';
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getRUT() {
+		return RUT;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
+	public String getEnfermedadCronica() {
+		return enfermedadCronica;
+	}
+
+	public PersonalMedico getMedicoTratante() {
+		return medicoTratante;
+	}
+
+	public boolean contrasenaCorrecta(String contrasena) {
+		return this.contrasena.equals(contrasena);
 	}
 }

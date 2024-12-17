@@ -24,7 +24,7 @@ public class SesionPersonalAdmin implements Initializable {
         buttonCerrarSesion.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent event) {
-                Clinica.cambioEscena(event, "Login.fxml", "Inicio de Sesion!", null,null,null);
+                Clinica.cambioEscenaPA(event, "Login.fxml", "Inicio de Sesion!", null,null,null,9);
             }
         });
     }
