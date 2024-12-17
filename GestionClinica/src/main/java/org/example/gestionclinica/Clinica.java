@@ -244,7 +244,9 @@ public class Clinica {
 	}
 
 	public static void IniciarSesion(ActionEvent event, String usuario, String contrasena) throws ExecutionException, InterruptedException {
-		inicializarFirebase();
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
 		Firestore db = FirestoreClient.getFirestore();
 		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
 		ArrayList<Paciente> pacientes = cargarDatosPacientes(db, funcionariosQueSonMedicos(funcionarios));
