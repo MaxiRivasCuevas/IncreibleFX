@@ -7,6 +7,7 @@ module org.example.gestionclinica {
     requires firebase.admin;
     requires google.cloud.core;
     requires com.google.auth;
+    requires java.desktop;
 
     opens org.example.gestionclinica to javafx.fxml;
     exports org.example.gestionclinica;

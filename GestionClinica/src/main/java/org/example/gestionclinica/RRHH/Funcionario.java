@@ -42,4 +42,5 @@ public abstract class Funcionario {
 	}
 
 	public abstract int getNivelAcceso();
+
 }

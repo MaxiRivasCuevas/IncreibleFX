@@ -4,18 +4,19 @@ import org.example.gestionclinica.RRHH.PersonalMedico;
 import java.util.ArrayList;
 
 public class Paciente {
-
 	private String RUT;
 	private String nombre;
+	private String contrasena;
 	private String historial;
-	private String edad;
+	private int edad;
 	private String enfermedadCronica;
 	private PersonalMedico medicoTratante;
 	private ArrayList<Cita> citas;
 
-	public Paciente(String RUT, String nombre, String historial, String edad, String enfermedadCronica) {
+	public Paciente(String RUT, String nombre, String contrasena, String historial, int edad, String enfermedadCronica) {
 		this.RUT = RUT;
 		this.nombre = nombre;
+		this.contrasena = contrasena;
 		this.historial = historial;
 		this.edad = edad;
 		this.enfermedadCronica = enfermedadCronica;
@@ -31,11 +32,12 @@ public class Paciente {
 			Cita citaTemporal = new Cita();
 			String RUT=null;
 			String nombre=null;
+			String contrasena=null;
 			String historial=null;
-			String edad=null;
+			int edad = 0;
 			String enfermedadCronica=null;
-			Paciente paciente=new Paciente(RUT,nombre,historial,edad,enfermedadCronica);
-            citaTemporal.generarCita(medicoTratante,paciente);
+			Paciente paciente = new Paciente(RUT,nombre,contrasena,historial,edad,enfermedadCronica);
+			citaTemporal.generarCita(medicoTratante,paciente);
 			citas.add(citaTemporal);
 		}else {
 			System.out.println("El nivel de acceso no es el requerido");
@@ -80,6 +82,7 @@ public class Paciente {
 		return "Paciente{" +
 				"RUT='" + RUT + '\'' +
 				", nombre='" + nombre + '\'' +
+				", contrasena='" + contrasena + '\'' +
 				", historial='" + historial + '\'' +
 				", edad='" + edad + '\'' +
 				", enfermedadCronica='" + enfermedadCronica + '\'' +

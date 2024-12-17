@@ -1,12 +1,13 @@
 package org.example.gestionclinica.RRHH;
 
 public class PersonalAdmin extends Funcionario implements PersonalInterno {
-
+	private String contrasena;
 	private int nivelAcceso;
 	private int vacaciones;
 
-	public PersonalAdmin(String IDFuncionario, String nombre, String historial, int sueldoBruto, String fechaContratacion, String rol, int nivelAcceso, int vacaciones) {
+	public PersonalAdmin(String IDFuncionario, String nombre, String contrasena, String historial, int sueldoBruto, String fechaContratacion, String rol, int nivelAcceso, int vacaciones) {
 		super(IDFuncionario, nombre, historial, sueldoBruto, fechaContratacion, rol);
+		this.contrasena = contrasena;
 		this.nivelAcceso = nivelAcceso;
 		this.vacaciones = vacaciones;
 	}
@@ -50,12 +51,18 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 	public String toString() {
 		return "PersonalAdmin{" + "\n" +
 				super.toString() + "\n" +
-				"nivelAcceso=" + nivelAcceso + "\n" +
-				"vacaciones=" + vacaciones + "\n" +
+				"   contrasenia=" + contrasena + "\n" +
+				"   nivelAcceso=" + nivelAcceso + "\n" +
+				"   vacaciones=" + vacaciones + "\n" +
 				'}';
 	}
 
 	public int getNivelAcceso() {
 		return nivelAcceso;
+	}
+
+	@Override
+	public boolean contrasenaCorrecta(String contrasena) {
+		return this.contrasena.equals(contrasena);
 	}
 }

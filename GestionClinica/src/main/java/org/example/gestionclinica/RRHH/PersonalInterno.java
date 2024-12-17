@@ -14,4 +14,6 @@ public interface PersonalInterno {
 	 */
 	int inscribir(int nivelAcceso);
 
+	boolean contrasenaCorrecta(String contrasena);
+
 }

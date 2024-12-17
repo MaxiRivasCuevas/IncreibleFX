@@ -6,6 +6,13 @@ import com.google.api.core.ApiFuture;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import org.example.gestionclinica.RRHH.Funcionario;
 import org.example.gestionclinica.RRHH.PersonalAdmin;
 import org.example.gestionclinica.RRHH.PersonalMedico;
@@ -29,6 +36,12 @@ public class Clinica {
 		for (Funcionario persona : funcionarios) {
 			System.out.println(persona.toString());
 		}
+
+		ArrayList<Paciente> pacientes = cargarDatosPacientes(db);
+
+		for (Paciente persona : pacientes) {
+			System.out.println(persona.toString());
+		}
 /*
 		String [][] arregloInicioSesion = crearArregloInicioSesion(funcionarios);
 
@@ -39,7 +52,6 @@ public class Clinica {
 			System.out.println(sesion[2]);
 		}
 */
-		ArrayList<Paciente> pacientes = new ArrayList<>();
 	}
 
 	public String infoRAW(String nombre) throws ExecutionException, InterruptedException {
@@ -71,6 +83,22 @@ public class Clinica {
 		}
 	}
 
+	public static ArrayList<Paciente> cargarDatosPacientes(Firestore db) throws ExecutionException, InterruptedException {
+		ArrayList<Paciente> pacientes = new ArrayList<>();
+
+		ApiFuture<QuerySnapshot> query =db.collection("Pacientes").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents){
+			pacientes.add(new Paciente(document.getString("RUT")
+					, document.getString("nombre"), document.getString("contrasena")
+					, document.getString("historial")
+					, doubleToInt(document.getDouble("edad"))
+					, document.getString("enfermedadCronica")));
+		}
+		return pacientes;
+	}
+
 	public static ArrayList<Funcionario> cargarDatosPersonal(Firestore db) throws ExecutionException, InterruptedException {
 		ArrayList<Funcionario> funcionarios = new ArrayList<>();
 		ArrayList<Funcionario> personalMedico = cargarDatosPersonalMedico(db);
@@ -94,10 +122,11 @@ public class Clinica {
 		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 		for (QueryDocumentSnapshot document : documents){
 			funcionarios.add(new PersonalMedico(document.getString("IdFuncionario")
-					, document.getString("nombre"), document.getString("historial")
-					, doubleToInt(document.getDouble("sueldoBruto")), document.getString("fechaContratacion")
-					, document.getString("rol"), doubleToInt(document.getDouble("nivelAcceso"))
-					, document.getString("especialidad"), doubleToInt(document.getDouble("vacaciones"))));
+					, document.getString("nombre"), document.getString("contrasena")
+					, document.getString("historial"), doubleToInt(document.getDouble("sueldoBruto"))
+					, document.getString("fechaContratacion"), document.getString("rol")
+					, doubleToInt(document.getDouble("nivelAcceso")), document.getString("especialidad")
+					, doubleToInt(document.getDouble("vacaciones"))));
 		}
 		return funcionarios;
 	}
@@ -110,24 +139,73 @@ public class Clinica {
 		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 		for (QueryDocumentSnapshot document : documents){
 			funcionarios.add(new PersonalAdmin(document.getString("IdFuncionario")
-					, document.getString("nombre"), document.getString("historial")
-					, doubleToInt(document.getDouble("sueldoBruto")), document.getString("fechaContratacion")
-					, document.getString("rol"), doubleToInt(document.getDouble("nivelAcceso"))
-					, doubleToInt(document.getDouble("vacaciones"))));
+					, document.getString("nombre"), document.getString("contrasena")
+					, document.getString("historial"), doubleToInt(document.getDouble("sueldoBruto"))
+					, document.getString("fechaContratacion"), document.getString("rol")
+					, doubleToInt(document.getDouble("nivelAcceso")), doubleToInt(document.getDouble("vacaciones"))));
 		}
 		return funcionarios;
 	}
 
-	public static String [][] crearArregloInicioSesion(ArrayList<Funcionario> funcionarios){
-		//Arreglo de dos dimensiones, la primera es de cada funcionario
-		//, la segunda es de nombre, id y nivel de acceso respectivamente
-		String [][] arregloInicioSesion = new String[funcionarios.size()][3];
-
-		for (int i = 0; i < funcionarios.size(); i++) {
-			arregloInicioSesion[i][0] = funcionarios.get(i).getNombre();
-			arregloInicioSesion[i][1] = funcionarios.get(i).getIDFuncionario();
-			arregloInicioSesion[i][2] = String.valueOf(funcionarios.get(i).getNivelAcceso());
+	public static String crearArregloFuncionarios(ArrayList<Funcionario> funcionarios){
+		String resultado;
+		if (funcionarios.isEmpty()){
+			resultado = null;
+		}else{
+			resultado = funcionarios.get(0).getNombre() + "\n";
 		}
-		return arregloInicioSesion;
+		for (int i = 1; i < funcionarios.size(); i++) {
+			resultado += funcionarios.get(i).getNombre() + "\n";
+		}
+		return resultado;
 	}
+
+	public static void cambioEscena(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes){
+		Parent root = null;
+		if (usuario != null){
+			try {
+				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+				root = loader.load();
+				SesionPersonalAdmin sesionPersonalAdmin = loader.getController();
+				String nombresFuncionarios = crearArregloFuncionarios(funcionarios);
+				sesionPersonalAdmin.setInfo(usuario, nombresFuncionarios);
+				System.out.println(nombresFuncionarios);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600,400));
+		stage.show();
+	}
+
+	public static void IniciarSesion(ActionEvent event, String usuario, String contrasena) throws ExecutionException, InterruptedException {
+		inicializarFirebase();
+		Firestore db = FirestoreClient.getFirestore();
+		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
+		ArrayList<Paciente> pacientes = cargarDatosPacientes(db);
+		boolean usuarioValido = false;
+		for (Funcionario funcionario : funcionarios) {
+			if (funcionario.getNombre().equals(usuario) && ((PersonalAdmin) funcionario).contrasenaCorrecta(contrasena)) {
+				usuarioValido = true;
+			}
+		}
+		if (usuarioValido) {
+			cambioEscena(event, "SesionPA.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
+		} else {
+			System.out.println("Usuario o Contraseña incorrecta");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("Usuario o Contraseña incorrecta!");
+			alert.show();
+		}
+	}
+
+	public static void IngresarNuevoUsuario(){}
 }
