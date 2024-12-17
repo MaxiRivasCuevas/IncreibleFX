@@ -64,15 +64,12 @@ public class Paciente {
 
 	@Override
 	public String toString() {
-		return "Paciente{" +
-				"RUT='" + RUT + '\'' +
-				", nombre='" + nombre + '\'' +
-				", contrasena='" + contrasena + '\'' +
-				", historial='" + historial + '\'' +
-				", edad='" + edad + '\'' +
-				", enfermedadCronica='" + enfermedadCronica + '\'' +
-				", medicoTratante=" + medicoTratante +
-				'}';
+		return  "RUT: " + RUT + "\n" +
+				"Nombre: " + nombre + "\n" +
+				"Historial: " + historial + "\n" +
+				"Edad: " + edad + "\n" +
+				"EnfermedadCronica: " + enfermedadCronica + "\n" +
+				"MedicoTratante: " + medicoTratante + "\n";
 	}
 
 	public String getNombre() {

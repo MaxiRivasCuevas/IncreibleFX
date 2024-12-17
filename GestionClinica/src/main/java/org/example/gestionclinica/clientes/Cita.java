@@ -45,11 +45,28 @@ public class Cita {
 		return paciente;
 	}
 
+	public PersonalMedico getMedico() {
+		return medico;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
 	@Override
 	public String toString() {
 		return  "fecha: " + fecha + "\n" +
 				"hora: " + hora + "\n" +
 				"paciente: " + paciente.getNombre() + "\n" +
 				"medico: " + medico.getNombre() + "\n";
+	}
+
+	public String detalleString(){
+		return  "Fecha: " + fecha + "\n" +
+				"Hora: " + hora + "\n";
 	}
 }

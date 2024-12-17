@@ -43,6 +43,14 @@ public class PersonalMedico extends Funcionario implements PersonalInterno {
 		return nivelAcceso;
 	}
 
+	public int getVacaciones() {
+		return vacaciones;
+	}
+
+	public String getEspecialidad() {
+		return especialidad;
+	}
+
 	@Override
 	public boolean contrasenaCorrecta(String contrasena) {
 		return this.contrasena.equals(contrasena);

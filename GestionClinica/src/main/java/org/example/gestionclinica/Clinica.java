@@ -74,8 +74,6 @@ public class Clinica {
 			for (Cita cita : citas){
 				if (cita.getPaciente().getNombre().equals(paciente.getNombre())){
 					paciente.agregarCita(cita);
-					System.out.println("skere");
-					System.out.println(cita.toString());
 				}
 			}
 		}
@@ -139,7 +137,7 @@ public class Clinica {
 		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 		for (QueryDocumentSnapshot document : documents){
 			funcionarios.add(new PersonalMedico(document.getString("IdFuncionario")
-					, document.getString("nombre"), document.getString("contrasena")
+					, document.getString("nombre"), document.getString("constrasena")
 					, document.getString("historial"), doubleToInt(document.getDouble("sueldoBruto"))
 					, document.getString("fechaContratacion"), document.getString("rol")
 					, doubleToInt(document.getDouble("nivelAcceso")), document.getString("especialidad")
@@ -203,6 +201,48 @@ public class Clinica {
 		stage.show();
 	}
 
+	public static void cambioEscenaPM(ActionEvent event, String fxmlFile, String title, String usuario, Firestore db, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes, int nivelAcceso){
+		Parent root = null;
+		if (usuario != null){
+			try {
+				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+				root = loader.load();
+				SesionPersonalMedico sesionPersonalMedico = loader.getController();
+				ArrayList<Cita> citas = cargarCitas(db,funcionariosQueSonMedicos(funcionarios),pacientes);
+				String citasString = null;
+				int n = 0;
+				for (Cita cita : citas){
+					if (cita.getMedico().getNombre().equals(usuario)){
+						citasString = "N°" + n + " A las: " + cita.getHora() + "\n"
+								    + "    con " +cita.getPaciente().getNombre()+"\n";
+					}
+				}
+				String rol = null;
+				String especialidad = null;
+				for (PersonalMedico personal : funcionariosQueSonMedicos(funcionarios)) {
+					if (personal.getNombre().equals(usuario)){
+						rol = personal.getRol();
+						especialidad = personal.getEspecialidad();
+					}
+				}
+				sesionPersonalMedico.setInfo(usuario, citasString, rol, especialidad);
+				System.out.println(citas);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600,400));
+		stage.show();
+	}
+
 	public static void cambioEscenaPaciente(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes){
 		Parent root = null;
 		if (usuario != null){
@@ -243,6 +283,38 @@ public class Clinica {
 		stage.show();
 	}
 
+	public static void cambioEscenaDetalleCita(ActionEvent event, String fxmlFile, String title, String usuario,String cita, String paciente, ArrayList<Funcionario> funcionarios){
+		Parent root = null;
+		if (usuario != null){
+			try {
+				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+				root = loader.load();
+				String rol = null;
+				String especialidad = null;
+				for (PersonalMedico personal : funcionariosQueSonMedicos(funcionarios)) {
+					if (personal.getNombre().equals(usuario)){
+						rol = personal.getRol();
+						especialidad = personal.getEspecialidad();
+					}
+				}
+				DetalleUnaCita detalleUnaCita = loader.getController();
+				detalleUnaCita.setInfo(usuario,cita, paciente, rol, especialidad);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600,400));
+		stage.show();
+	}
+
 	public static void IniciarSesion(ActionEvent event, String usuario, String contrasena) throws ExecutionException, InterruptedException {
 		if (FirebaseApp.getApps().isEmpty()) {
 			inicializarFirebase();
@@ -253,9 +325,16 @@ public class Clinica {
 		boolean usuarioValido = false;
 		int nivelAcceso = 9;
 		for (Funcionario funcionario : funcionarios) {
-			if (funcionario.getNombre().equals(usuario) && ((PersonalAdmin) funcionario).contrasenaCorrecta(contrasena)) {
-				usuarioValido = true;
-				nivelAcceso = funcionario.getNivelAcceso();
+			if (funcionario.getClass() == PersonalAdmin.class) {
+				if (funcionario.getNombre().equals(usuario) && ((PersonalAdmin) funcionario).contrasenaCorrecta(contrasena)) {
+					usuarioValido = true;
+					nivelAcceso = funcionario.getNivelAcceso();
+				}
+			} else if (funcionario.getClass() == PersonalMedico.class) {
+				if (funcionario.getNombre().equals(usuario) && ((PersonalMedico) funcionario).contrasenaCorrecta(contrasena)) {
+					usuarioValido = true;
+					nivelAcceso = funcionario.getNivelAcceso();
+				}
 			}
 		}
 		for (Paciente paciente : pacientes) {
@@ -266,6 +345,8 @@ public class Clinica {
 		}
 		if (usuarioValido && nivelAcceso == 1) {
 			cambioEscenaPA(event, "SesionPA.fxml", "Bienvenido!", usuario, funcionarios, pacientes, nivelAcceso);
+		} else if (usuarioValido && nivelAcceso == 2) {
+			cambioEscenaPM(event, "SesionPM.fxml", "Bienvenido!", usuario, db, funcionarios, pacientes,nivelAcceso);
 		} else if (usuarioValido && nivelAcceso == 9) {
 			cambioEscenaPaciente(event, "SesionPaciente.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
 		} else {
@@ -277,6 +358,39 @@ public class Clinica {
 	}
 
 	public static void IngresarNuevoUsuario(){}
+
+	public static void verDetalleCita(ActionEvent event, String usuario,int n) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ArrayList<Funcionario> funcionarios = cargarDatosPersonalMedico(db);
+		ArrayList<Paciente> pacientes = cargarDatosPacientes(db, funcionariosQueSonMedicos(funcionarios));
+		ArrayList<Cita> citas = cargarCitas(db,funcionariosQueSonMedicos(funcionarios),pacientes);
+
+		String infoCita = null;
+		String infoPaciente = null;
+		boolean citaExiste = false;
+		int i = 0;
+		for (Cita cita : citas){
+			if (cita.getMedico().getNombre().equals(usuario)){
+				i++;
+				if (i == n+1) {
+					infoCita = cita.detalleString();
+					infoPaciente = cita.getPaciente().toString();
+					citaExiste = true;
+				}
+			}
+		}
+		if (citaExiste) {
+			cambioEscenaDetalleCita(event, "DUC.fxml","Detalle",usuario,infoCita,infoPaciente,funcionarios);
+		}else {
+			System.out.println("No existe una cita con ese numero");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("No existe una cita con ese numero!");
+			alert.show();
+		}
+	}
 
 	public static ArrayList<PersonalMedico> funcionariosQueSonMedicos(ArrayList<Funcionario> funcionarios){
 		ArrayList<PersonalMedico> personalMedicos = new ArrayList<>();

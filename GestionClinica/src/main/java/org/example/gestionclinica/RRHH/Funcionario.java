@@ -41,6 +41,10 @@ public abstract class Funcionario {
 		return nombre;
 	}
 
+	public String getRol() {
+		return rol;
+	}
+
 	public abstract int getNivelAcceso();
 
 }
