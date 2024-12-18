@@ -49,12 +49,9 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 
 	@Override
 	public String toString() {
-		return "PersonalAdmin{" + "\n" +
-				super.toString() + "\n" +
-				"   contrasenia=" + contrasena + "\n" +
-				"   nivelAcceso=" + nivelAcceso + "\n" +
-				"   vacaciones=" + vacaciones + "\n" +
-				'}';
+		return super.toString() +
+				"NivelAcceso: " + nivelAcceso + "\n" +
+				"Vacaciones: " + vacaciones + "\n";
 	}
 
 	public int getNivelAcceso() {

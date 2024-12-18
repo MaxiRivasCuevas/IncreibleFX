@@ -30,13 +30,10 @@ public class PersonalMedico extends Funcionario implements PersonalInterno {
 	}
 
 	public String toString() {
-		return "PersonalMedico{" + "\n" +
-				super.toString() + "\n" +
-				"   contrasenia=" + contrasena + "\n" +
-				"   nivelAcceso=" + nivelAcceso + "\n" +
-				"   especialidad=" + especialidad + "\n" +
-				"   vacaciones=" + vacaciones + "\n" +
-				'}';
+		return super.toString() +
+				"NivelAcceso: " + nivelAcceso + "\n" +
+				"Especialidad: " + especialidad + "\n" +
+				"Vacaciones: " + vacaciones + "\n";
 	}
 
 	public int getNivelAcceso() {

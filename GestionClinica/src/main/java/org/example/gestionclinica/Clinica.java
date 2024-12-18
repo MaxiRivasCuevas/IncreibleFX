@@ -209,12 +209,13 @@ public class Clinica {
 				root = loader.load();
 				SesionPersonalMedico sesionPersonalMedico = loader.getController();
 				ArrayList<Cita> citas = cargarCitas(db,funcionariosQueSonMedicos(funcionarios),pacientes);
-				String citasString = null;
+				String citasString = "";
 				int n = 0;
 				for (Cita cita : citas){
 					if (cita.getMedico().getNombre().equals(usuario)){
-						citasString = "N°" + n + " A las: " + cita.getHora() + "\n"
+						citasString += "N°" + n + " A las: " + cita.getHora() + "\n"
 								    + "    con " +cita.getPaciente().getNombre()+"\n";
+						n++;
 					}
 				}
 				String rol = null;
@@ -373,6 +374,46 @@ public class Clinica {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setContentText("No existe una cita con ese numero!");
 			alert.show();
+		}
+	}
+
+	public static void detalleEmpleado(ActionEvent event, String usuario,String empleado) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
+		Funcionario empleadoObjeto = null;
+		boolean empleadoExiste = false;
+		for (Funcionario funcionario : funcionarios) {
+			if (funcionario.getNombre().equals(empleado)) {
+				empleadoObjeto = funcionario;
+				empleadoExiste = true;
+			}
+		}
+		if (empleadoExiste) {
+			cambioEscenaEmpleado(event, "DUE.fxml", "Informacion Empleado", usuario, empleadoObjeto);
+		} else {
+			System.out.println("No existe una empleado con ese nombre");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("No existe una empleado con ese nombre!");
+			alert.show();
+		}
+	}
+
+	public static void cambioEscenaEmpleado(ActionEvent event, String fxmlFile, String title, String usuario, Funcionario empleado){
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle(title);
+			stage.setScene(new Scene(root));
+			DetalleUnEmpleado detalleUnEmpleado = loader.getController();
+			detalleUnEmpleado.setInfo(empleado.toString());
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.SesionPersonalAdmin">
    <children>
@@ -18,8 +18,11 @@
       </AnchorPane>
       <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
          <children>
-            <Label layoutX="33.0" layoutY="21.0" text="Informacion Disponible:" textFill="#ece8e8" />
+            <Label layoutX="33.0" layoutY="21.0" text="Empleados:" textFill="#ece8e8" />
             <Label fx:id="lableEmpleados" layoutX="33.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
+            <TextField fx:id="tfNomEmp" layoutX="344.0" layoutY="16.0" prefHeight="26.0" prefWidth="116.0" promptText="Nombre Empleado" />
+            <Button fx:id="buttonBuscar" layoutX="460.0" layoutY="16.0" mnemonicParsing="false" text="Buscar" />
+            <Button fx:id="buttonAgregarEmp" layoutX="357.0" layoutY="248.0" mnemonicParsing="false" text="Agregar Nuevo Empleado" />
          </children>
       </AnchorPane>
    </children>
