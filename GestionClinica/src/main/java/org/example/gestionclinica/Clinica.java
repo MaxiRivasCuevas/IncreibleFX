@@ -283,36 +283,20 @@ public class Clinica {
 		stage.show();
 	}
 
-	public static void cambioEscenaDetalleCita(ActionEvent event, String fxmlFile, String title, String usuario,String cita, String paciente, ArrayList<Funcionario> funcionarios){
+	public static void cambioEscenaDetalleCita(ActionEvent event, String fxmlFile, String title, String usuario,String cita, String paciente) {
 		Parent root = null;
-		if (usuario != null){
-			try {
-				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
-				root = loader.load();
-				String rol = null;
-				String especialidad = null;
-				for (PersonalMedico personal : funcionariosQueSonMedicos(funcionarios)) {
-					if (personal.getNombre().equals(usuario)){
-						rol = personal.getRol();
-						especialidad = personal.getEspecialidad();
-					}
-				}
-				DetalleUnaCita detalleUnaCita = loader.getController();
-				detalleUnaCita.setInfo(usuario,cita, paciente, rol, especialidad);
-			} catch (Exception e){
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
-			} catch (Exception e){
-				e.printStackTrace();
-			}
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle("Detalles de Cita");
+			stage.setScene(new Scene(root));
+			DetalleUnaCita detalleUnaCita = loader.getController();
+			detalleUnaCita.setInfo(cita, paciente);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.setTitle(title);
-		stage.setScene(new Scene(root, 600,400));
-		stage.show();
 	}
 
 	public static void IniciarSesion(ActionEvent event, String usuario, String contrasena) throws ExecutionException, InterruptedException {
@@ -383,7 +367,7 @@ public class Clinica {
 			}
 		}
 		if (citaExiste) {
-			cambioEscenaDetalleCita(event, "DUC.fxml","Detalle",usuario,infoCita,infoPaciente,funcionarios);
+			cambioEscenaDetalleCita(event, "DUC.fxml","Detalle",usuario,infoCita,infoPaciente);
 		}else {
 			System.out.println("No existe una cita con ese numero");
 			Alert alert = new Alert(Alert.AlertType.ERROR);

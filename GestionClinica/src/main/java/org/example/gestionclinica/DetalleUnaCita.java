@@ -14,9 +14,6 @@ import java.util.ResourceBundle;
 
 public class DetalleUnaCita implements Initializable {
     @FXML
-    private Button buttonCerrarSesion;
-
-    @FXML
     private Button buttonAgregaEnfCron;
 
     @FXML
@@ -29,34 +26,16 @@ public class DetalleUnaCita implements Initializable {
     private TextArea tfHistorial;
 
     @FXML
-    private Label lableUsuario;
-
-    @FXML
     private Label lableCita;
 
     @FXML
     private Label lablePaciente;
 
-    @FXML
-    private Label lableRol;
-
-    @FXML
-    private Label lableEspecialidad;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buttonCerrarSesion.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(javafx.event.ActionEvent event) {
-                Clinica.cambioEscenaPA(event, "Login.fxml", "Inicio de Sesion!", null,null,null,9);
-            }
-        });
     }
-    public void setInfo(String usuario, String cita, String paciente, String rol, String especialidad) {
-        lableUsuario.setText(usuario);
+    public void setInfo(String cita, String paciente) {
         lableCita.setText(cita);
         lablePaciente.setText(paciente);
-        lableRol.setText(rol);
-        lableEspecialidad.setText(especialidad);
     }
 }
