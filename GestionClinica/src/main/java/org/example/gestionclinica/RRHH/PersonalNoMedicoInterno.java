@@ -7,7 +7,7 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 	private int nivelAcceso;
 	private int vacaciones;
 
-	public PersonalNoMedicoInterno(String IDFuncionario, String contrasena, String nombre, String historial, int sueldoBruto, String fechaContratacion, String rol, int nivelAcceso, int vacaciones) {
+	public PersonalNoMedicoInterno(String IDFuncionario, String nombre, String contrasena, String historial, int sueldoBruto, String fechaContratacion, String rol, int nivelAcceso, int vacaciones) {
 		super(IDFuncionario, nombre, historial, sueldoBruto, fechaContratacion, rol);
 		this.contrasena = contrasena;
 		this.nivelAcceso = nivelAcceso;

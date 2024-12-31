@@ -5,12 +5,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.example.gestionclinica.RRHH.Funcionario;
+import org.example.gestionclinica.clientes.Paciente;
 
 public class SesionPersonalAdmin implements Initializable {
     @FXML
@@ -30,6 +32,10 @@ public class SesionPersonalAdmin implements Initializable {
 
     @FXML
     private Label lableEmpleados;
+
+    private java.util.ArrayList<Funcionario> funcionarios;
+    private ArrayList<Paciente> pacientes;
+    int nivelAcceso;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,10 +58,20 @@ public class SesionPersonalAdmin implements Initializable {
                 }
             }
         });
+
+        buttonAgregarEmp.setOnAction(new EventHandler<javafx.event.ActionEvent>(){
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                Clinica.agregarEmpleado(event,lableUsuario.getText(),funcionarios,pacientes,nivelAcceso);
+            }
+        });
     }
 
-    public void setInfo(String usuario, String Empleados) {
+    public void setInfo(String usuario, String Empleados, java.util.ArrayList<Funcionario> funcionarios,ArrayList<Paciente> pacientes,int nivelAcceso) {
         lableUsuario.setText(usuario);
         lableEmpleados.setText(Empleados);
+        this.funcionarios = funcionarios;
+        this.pacientes = pacientes;
+        this.nivelAcceso = nivelAcceso;
     }
 }

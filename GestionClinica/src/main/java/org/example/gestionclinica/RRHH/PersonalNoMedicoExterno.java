@@ -12,6 +12,6 @@ public class PersonalNoMedicoExterno extends Funcionario {
 	}
 
 	public int getNivelAcceso() {
-		return 0;
+		return 10;
 	}
 }

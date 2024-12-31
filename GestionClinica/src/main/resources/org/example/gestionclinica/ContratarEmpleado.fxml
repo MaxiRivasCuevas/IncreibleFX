@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.AgregarEmpleado">
     <children>
-        <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
+        <AnchorPane fx:id="cbTipoEmpleado" prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
          <children>
             <TextField fx:id="tfIdEmpleado" layoutX="53.0" layoutY="38.0" promptText="Rut" />
             <TextField fx:id="tfNombre" layoutX="54.0" layoutY="79.0" promptText="nombre" />
@@ -15,7 +20,24 @@
             <TextField fx:id="tfSueldo" layoutX="54.0" layoutY="165.0" promptText="sueldo" />
             <TextField fx:id="tfRol" layoutX="255.0" layoutY="38.0" promptText="rol" />
             <TextField fx:id="tfNivelAcceso" layoutX="256.0" layoutY="79.0" promptText="nivel de acceso" />
-            <Button fx:id="buttonContratar" layoutX="255.0" layoutY="125.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Contratar Empleado" />
+            <Button fx:id="buttonContratar" layoutX="254.0" layoutY="164.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Contratar Empleado" />
+            <ComboBox fx:id="textInput" layoutX="254.0" layoutY="125.0" prefWidth="150.0" promptText="tipo" />
+            <Button fx:id="buttonVolver" layoutX="255.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Volver" />
+            <HBox layoutX="430.0" layoutY="1.0" prefHeight="330.0" prefWidth="170.0">
+               <children>
+                  <Pane prefHeight="339.0" prefWidth="170.0" style="-fx-background-color: #9933ff;">
+                     <children>
+                        <TextField fx:id="tfInfoContacto" layoutX="10.0" layoutY="139.0" prefHeight="26.0" prefWidth="150.0" promptText="Info Contacto" />
+                        <TextField fx:id="tfEspecialidad" layoutX="10.0" layoutY="59.0" prefHeight="26.0" prefWidth="150.0" promptText="Especialidad o Empresa" />
+                        <Label layoutX="31.0" layoutY="14.0" text="Solo Si Corresponde!">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
          </children>
         </AnchorPane>
     </children>

@@ -13,15 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import org.example.gestionclinica.RRHH.Funcionario;
-import org.example.gestionclinica.RRHH.PersonalAdmin;
-import org.example.gestionclinica.RRHH.PersonalMedico;
+import org.example.gestionclinica.RRHH.*;
 import org.example.gestionclinica.clientes.Cita;
 import org.example.gestionclinica.clientes.Paciente;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class Clinica {
@@ -117,10 +115,16 @@ public class Clinica {
 	public static ArrayList<Funcionario> cargarDatosPersonal(Firestore db) throws ExecutionException, InterruptedException {
 		ArrayList<Funcionario> funcionarios = new ArrayList<>();
 		ArrayList<Funcionario> personalMedico = cargarDatosPersonalMedico(db);
-		//agrega personal medico a la lista final
         funcionarios.addAll(personalMedico);
+
 		ArrayList<Funcionario> personalAdmin = cargarDatosPersonalAdmin(db);
 		funcionarios.addAll(personalAdmin);
+
+		ArrayList<Funcionario> personalNoMedicoInterno = cargarDatosPersonalNoMedicoInterno(db);
+		funcionarios.addAll(personalNoMedicoInterno);
+
+		ArrayList<Funcionario> personalNoMedicoExterno = cargarDatosPersonalNoMedicoExterno(db);
+		funcionarios.addAll(personalNoMedicoExterno);
 		return funcionarios;
 	}
 
@@ -162,6 +166,85 @@ public class Clinica {
 		return funcionarios;
 	}
 
+	public static ArrayList<Funcionario> cargarDatosPersonalNoMedicoInterno(Firestore db) throws ExecutionException, InterruptedException {
+		ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+		ApiFuture<QuerySnapshot> query =db.collection("PersonalNoMedicoInterno").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents){
+			funcionarios.add(new PersonalNoMedicoInterno(document.getString("IdFuncionario")
+					, document.getString("nombre"), document.getString("contrasena")
+					, document.getString("historial"), doubleToInt(document.getDouble("sueldoBruto"))
+					, document.getString("fechaContratacion"), document.getString("rol")
+					, doubleToInt(document.getDouble("nivelAcceso")), doubleToInt(document.getDouble("vacaciones"))));
+		}
+		return funcionarios;
+	}
+
+	public static ArrayList<Funcionario> cargarDatosPersonalNoMedicoExterno(Firestore db) throws ExecutionException, InterruptedException {
+		ArrayList<Funcionario> funcionarios = new ArrayList<>();
+
+		ApiFuture<QuerySnapshot> query =db.collection("PersonalNoMedicoExterno").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents){
+			funcionarios.add(new PersonalNoMedicoExterno(document.getString("IdFuncionario")
+					, document.getString("nombre"), document.getString("historial")
+					, doubleToInt(document.getDouble("sueldoBruto")), document.getString("fechaContratacion")
+					, document.getString("rol"), document.getString("empresa")
+					, document.getString("infoContactoEmpresa")));
+		}
+		return funcionarios;
+	}
+	public static Funcionario subirEmpleadoAFirebase(String rut, String nombre, String contrasena, int sueldo, String rol, int nivelAcceso, String tipoEmpleado, String especialidad, String contacto) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		String fechaActual =new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		Map<String,Object> data = new HashMap<>();
+		String collection = null;
+		data.put("IdFuncionario",rut);
+		data.put("nombre", nombre);
+		data.put("sueldoBruto", sueldo);
+		data.put("rol", rol);
+		data.put("historial", "");
+		data.put("fechaContratacion", fechaActual);
+
+		Funcionario funcionario;
+
+		if (tipoEmpleado.equals("Administrativo")){
+			data.put("contrasena", contrasena);
+			data.put("nivelAcceso", nivelAcceso);
+			data.put("vacaciones", 0);
+			collection = "PersonalAdmin";
+			funcionario = new PersonalAdmin(rut,nombre,contrasena,"",sueldo,fechaActual,rol,nivelAcceso,0);
+		} else if (tipoEmpleado.equals("Medico")) {
+			data.put("constrasena", contrasena);
+			data.put("nivelAcceso", nivelAcceso);
+			data.put("vacaciones", 0);
+			data.put("especialidad",especialidad);
+			collection = "PersonalMedico";
+			funcionario = new PersonalMedico(rut,nombre,contrasena,"",sueldo,fechaActual,rol,nivelAcceso,especialidad,0);
+		} else if (tipoEmpleado.equals("no Medico Interno")) {
+			data.put("contrasena", contrasena);
+			data.put("nivelAcceso", nivelAcceso);
+			data.put("vacaciones", 0);
+			collection = "PersonalNoMedicoInterno";
+			funcionario = new PersonalNoMedicoInterno(rut,nombre,contrasena,"",sueldo,fechaActual,rol,nivelAcceso,0);
+		} else {
+			data.put("empresa", especialidad);
+			data.put("infoContactoEmpresa", contacto);
+			collection = "PersonalNoMedicoExterno";
+			funcionario = new PersonalNoMedicoExterno(rut,nombre,"",sueldo,fechaActual,rol,especialidad,contacto);
+		}
+		DocumentReference docRef = db.collection(collection).document();
+		ApiFuture<WriteResult> result = docRef.set(data);
+		System.out.println("Tiempo de actualizacion: " + result.get().getUpdateTime());
+		return funcionario;
+	}
+
 	public static String crearArregloFuncionarios(ArrayList<Funcionario> funcionarios){
 		String resultado;
 		if (funcionarios.isEmpty()){
@@ -183,7 +266,7 @@ public class Clinica {
 				root = loader.load();
 				SesionPersonalAdmin sesionPersonalAdmin = loader.getController();
 				String nombresFuncionarios = crearArregloFuncionarios(funcionarios);
-				sesionPersonalAdmin.setInfo(usuario, nombresFuncionarios);
+				sesionPersonalAdmin.setInfo(usuario, nombresFuncionarios,funcionarios,pacientes,nivelAcceso);
 				System.out.println(nombresFuncionarios);
 			} catch (Exception e){
 				e.printStackTrace();
@@ -394,11 +477,15 @@ public class Clinica {
 		if (empleadoExiste) {
 			cambioEscenaEmpleado(event, "DUE.fxml", "Informacion Empleado", usuario, empleadoObjeto);
 		} else {
-			System.out.println("No existe una empleado con ese nombre");
+			System.out.println("No existe empleado con ese nombre");
 			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setContentText("No existe una empleado con ese nombre!");
+			alert.setContentText("No existe empleado con ese nombre!");
 			alert.show();
 		}
+	}
+
+	public static void agregarEmpleado(ActionEvent event, String usuario,ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes, int nivelAcceso){
+		cambioEscenaAgregarEmpleado(event,"ContratarEmpleado.fxml", "Agregar Nuevo Empleado", usuario,funcionarios,pacientes,nivelAcceso);
 	}
 
 	public static void cambioEscenaEmpleado(ActionEvent event, String fxmlFile, String title, String usuario, Funcionario empleado){
@@ -412,6 +499,23 @@ public class Clinica {
 			DetalleUnEmpleado detalleUnEmpleado = loader.getController();
 			detalleUnEmpleado.setInfo(empleado.toString());
 			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void cambioEscenaAgregarEmpleado(ActionEvent event, String fxmlFile, String title, String usuario,ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes, int nivelAcceso){
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			AgregarEmpleado agregarEmpleado = loader.getController();
+			agregarEmpleado.setInfo(usuario,funcionarios,pacientes,nivelAcceso);
+			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			stage.setTitle(title);
+			stage.setScene(new Scene(root, 600,400));
+			stage.show();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
