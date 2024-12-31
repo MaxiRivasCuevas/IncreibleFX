@@ -34,7 +34,6 @@ public class SesionPersonalAdmin implements Initializable {
     private Label lableEmpleados;
 
     private java.util.ArrayList<Funcionario> funcionarios;
-    private ArrayList<Paciente> pacientes;
     int nivelAcceso;
 
     @Override
@@ -42,7 +41,7 @@ public class SesionPersonalAdmin implements Initializable {
         buttonCerrarSesion.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent event) {
-                Clinica.cambioEscenaPA(event, "Login.fxml", "Inicio de Sesion!", null,null,null,9);
+                Clinica.cambioEscenaPA(event, "Login.fxml", "Inicio de Sesion!", null,9);
             }
         });
 
@@ -62,16 +61,15 @@ public class SesionPersonalAdmin implements Initializable {
         buttonAgregarEmp.setOnAction(new EventHandler<javafx.event.ActionEvent>(){
             @Override
             public void handle(javafx.event.ActionEvent event) {
-                Clinica.agregarEmpleado(event,lableUsuario.getText(),funcionarios,pacientes,nivelAcceso);
+                Clinica.agregarEmpleado(event,lableUsuario.getText(),nivelAcceso);
             }
         });
     }
 
-    public void setInfo(String usuario, String Empleados, java.util.ArrayList<Funcionario> funcionarios,ArrayList<Paciente> pacientes,int nivelAcceso) {
+    public void setInfo(String usuario, String Empleados, java.util.ArrayList<Funcionario> funcionarios,int nivelAcceso) {
         lableUsuario.setText(usuario);
         lableEmpleados.setText(Empleados);
         this.funcionarios = funcionarios;
-        this.pacientes = pacientes;
         this.nivelAcceso = nivelAcceso;
     }
 }

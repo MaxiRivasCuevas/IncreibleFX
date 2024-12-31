@@ -1,5 +1,14 @@
 package org.example.gestionclinica.RRHH;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.cloud.FirestoreClient;
+
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import static org.example.gestionclinica.Clinica.inicializarFirebase;
+
 public abstract class Funcionario {
 
 	private String IDFuncionario;
@@ -47,4 +56,7 @@ public abstract class Funcionario {
 
 	public abstract int getNivelAcceso();
 
+	public abstract void actualizarSueldoBruto(int sueldoBruto) throws ExecutionException, InterruptedException;
+
+	public abstract void actualizarRol(String rol) throws ExecutionException, InterruptedException;
 }

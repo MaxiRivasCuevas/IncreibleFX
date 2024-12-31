@@ -52,8 +52,7 @@ public class AgregarEmpleado implements Initializable {
     private Button buttonVolver;
 
     private String usuario;
-    private java.util.ArrayList<Funcionario> funcionarios;
-    private ArrayList<Paciente> pacientes;
+
     int nivelAcceso;
 
     @Override
@@ -63,7 +62,7 @@ public class AgregarEmpleado implements Initializable {
         buttonVolver.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                Clinica.cambioEscenaPA(event,"SesionPA.fxml","Bienvenido",usuario,funcionarios,pacientes,nivelAcceso);
+                Clinica.cambioEscenaPA(event,"SesionPA.fxml","Bienvenido",usuario,nivelAcceso);
             }
         });
 
@@ -71,13 +70,13 @@ public class AgregarEmpleado implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    funcionarios.add(Clinica.subirEmpleadoAFirebase(tfIdEmpleado.getText(),tfNombre.getText(),tfContrasena.getText(),Integer.parseInt(tfSueldo.getText()),tfRol.getText(),Integer.parseInt(tfNivelAcceso.getText()),getInfoCB(event),tfEspecialidad.getText(), tfInfoContacto.getText()));
+                    Clinica.subirEmpleadoAFirebase(tfIdEmpleado.getText(),tfNombre.getText(),tfContrasena.getText(),Integer.parseInt(tfSueldo.getText()),tfRol.getText(),Integer.parseInt(tfNivelAcceso.getText()),getInfoCB(event),tfEspecialidad.getText(), tfInfoContacto.getText());
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                Clinica.cambioEscenaPA(event,"SesionPA.fxml","Bienvenido",usuario,funcionarios,pacientes,nivelAcceso);
+                Clinica.cambioEscenaPA(event,"SesionPA.fxml","Bienvenido",usuario,nivelAcceso);
             }
         });
     }
@@ -87,10 +86,8 @@ public class AgregarEmpleado implements Initializable {
         return textInput.getValue();
     }
 
-    public void setInfo(String usuario,ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes, int nivelAcceso){
+    public void setInfo(String usuario,int nivelAcceso){
         this.usuario = usuario;
-        this.funcionarios = funcionarios;
-        this.pacientes = pacientes;
         this.nivelAcceso = nivelAcceso;
     }
 }

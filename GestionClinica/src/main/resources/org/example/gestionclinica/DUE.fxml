@@ -2,9 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.DetalleUnEmpleado">
     <children>
@@ -16,9 +16,15 @@
             <Button fx:id="buttonFiniquito" layoutX="273.0" layoutY="73.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Calculo Finiquito" />
             <Button fx:id="buttonAmonestar" layoutX="273.0" layoutY="126.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Amonestar" />
             <Button fx:id="buttonFelicitar" layoutX="274.0" layoutY="179.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Felicitar" />
-            <Button fx:id="buttonCambioSueldo" layoutX="273.0" layoutY="230.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Cambiar Sueldo" />
-            <Button fx:id="buttonCambioRol" layoutX="274.0" layoutY="283.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Cambiar Rol" />
             <Button fx:id="buttonDespedir" layoutX="72.0" layoutY="283.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Despedir" />
+            <AnchorPane layoutX="400.0" layoutY="-3.0" prefHeight="337.0" prefWidth="200.0" style="-fx-background-color: #9933ff;">
+               <children>
+                  <TextField fx:id="tfCambio" layoutX="25.0" layoutY="62.0" promptText="Ingrese Cambio" />
+                  <Button fx:id="buttonCambioSueldo" layoutX="42.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Cambiar Sueldo" />
+                  <Button fx:id="buttonCambioRol" layoutX="42.0" layoutY="142.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Cambiar Rol" />
+                  <Label layoutX="34.0" layoutY="26.0" text="En caso de cambiar algo:" />
+               </children>
+            </AnchorPane>
             </children>
         </AnchorPane>
     </children>
