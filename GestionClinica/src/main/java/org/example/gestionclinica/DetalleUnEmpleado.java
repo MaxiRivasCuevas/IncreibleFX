@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.example.gestionclinica.RRHH.Funcionario;
 
 import java.net.URL;
@@ -61,10 +58,17 @@ public class DetalleUnEmpleado implements Initializable {
         buttonCambioSueldo.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    funcionario.actualizarSueldoBruto(Integer.parseInt(tfCambio.getText()));
-                } catch (ExecutionException | InterruptedException e) {
-                    throw new RuntimeException(e);
+                if (esInt(tfCambio.getText())) {
+                    try {
+                        funcionario.actualizarSueldoBruto(Integer.parseInt(tfCambio.getText()));
+                    } catch (ExecutionException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else {
+                    System.out.println("El sueldo solo puede ser un numero entero!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("El sueldo solo puede ser un numero entero!");
+                    alert.show();
                 }
             }
         });
@@ -72,10 +76,17 @@ public class DetalleUnEmpleado implements Initializable {
         buttonCambioRol.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    funcionario.actualizarRol(tfCambio.getText());
-                } catch (ExecutionException | InterruptedException e) {
-                    throw new RuntimeException(e);
+                if (!tfCambio.getText().isEmpty()) {
+                    try {
+                        funcionario.actualizarRol(tfCambio.getText());
+                    } catch (ExecutionException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    System.out.println("Ingrese algun rol!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Ingrese algun rol!");
+                    alert.show();
                 }
             }
         });
@@ -84,5 +95,16 @@ public class DetalleUnEmpleado implements Initializable {
         System.out.println(info);
         lableEmpleado.setText(info);
         this.funcionario = funcionario;
+    }
+
+    private boolean esInt(String n) {
+        int i = 0;
+        try {
+            i = Integer.parseInt(n);
+            return true;
+        } catch (Exception InputMismatchException) {
+            System.out.println("Ingrese solo un numero!!!");
+        }
+        return false;
     }
 }
