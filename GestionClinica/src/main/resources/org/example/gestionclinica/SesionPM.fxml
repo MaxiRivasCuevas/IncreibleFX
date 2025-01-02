@@ -14,10 +14,11 @@
                 <Label layoutX="37.0" layoutY="36.0" text="Tipo: Personal Medico" textFill="#e4d7d7" />
                 <Button fx:id="buttonCerrarSesion" layoutX="499.0" layoutY="23.0" mnemonicParsing="false" text="Cerrar Sesion" />
                 <Label fx:id="lableUsuario" layoutX="93.0" layoutY="14.0" text="Null" textFill="#e4d7d7" />
-            <Label layoutX="259.0" layoutY="36.0" text="Especialidad:" textFill="#e4d7d7" />
-            <Label fx:id="lableEspecialidad" layoutX="333.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
-            <Label layoutX="259.0" layoutY="14.0" text="Rol:" textFill="#e4d7d7" />
-            <Label fx:id="lableRol" layoutX="289.0" layoutY="14.0" text="Null" textFill="#e4d7d7" />
+            <Label layoutX="225.0" layoutY="36.0" text="Especialidad:" textFill="#e4d7d7" />
+            <Label fx:id="lableEspecialidad" layoutX="300.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
+            <Label layoutX="225.0" layoutY="14.0" text="Rol:" textFill="#e4d7d7" />
+            <Label fx:id="lableRol" layoutX="248.0" layoutY="14.0" text="Null" textFill="#e4d7d7" />
+            <Button fx:id="buttonCambioContrasena" layoutX="361.0" layoutY="23.0" mnemonicParsing="false" text="Cambiar Contraseña" />
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">

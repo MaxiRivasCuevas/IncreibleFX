@@ -1,7 +1,17 @@
 package org.example.gestionclinica.clientes;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.cloud.FirestoreClient;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class Paciente {
 	private String RUT;
@@ -94,5 +104,25 @@ public class Paciente {
 
 	public boolean contrasenaCorrecta(String contrasena) {
 		return this.contrasena.equals(contrasena);
+	}
+
+	public boolean cambiarContrasena(String contrasena) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ApiFuture<QuerySnapshot> query = db.collection("Pacientes").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents) {
+			if (this.RUT.equals(document.getString("RUT"))) {
+				if (!document.getString("contrasena").equals(contrasena)) {
+					document.getReference().update("contrasena", contrasena);
+					System.out.println("contraseña actualizada!");
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

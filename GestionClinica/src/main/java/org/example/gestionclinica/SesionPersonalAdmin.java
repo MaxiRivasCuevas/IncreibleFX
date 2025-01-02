@@ -1,18 +1,15 @@
 package org.example.gestionclinica;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.example.gestionclinica.RRHH.Funcionario;
-import org.example.gestionclinica.clientes.Paciente;
 
 public class SesionPersonalAdmin implements Initializable {
     @FXML
@@ -23,6 +20,9 @@ public class SesionPersonalAdmin implements Initializable {
 
     @FXML
     private Button buttonAgregarEmp;
+
+    @FXML
+    private Button buttonCambioContrasena;
 
     @FXML
     private TextField tfNomEmp;
@@ -62,6 +62,17 @@ public class SesionPersonalAdmin implements Initializable {
             @Override
             public void handle(javafx.event.ActionEvent event) {
                 Clinica.agregarEmpleado(event,lableUsuario.getText(),nivelAcceso);
+            }
+        });
+
+        buttonCambioContrasena.setOnAction(new EventHandler<javafx.event.ActionEvent>(){
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                try {
+                    Clinica.cambiarContrasenaEmpleado(event,lableUsuario.getText());
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

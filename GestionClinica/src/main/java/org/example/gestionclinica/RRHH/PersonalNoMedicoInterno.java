@@ -6,6 +6,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
+import javafx.scene.control.Alert;
 import org.example.gestionclinica.clientes.Paciente;
 
 import java.util.List;
@@ -87,5 +88,31 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 	@Override
 	public boolean contrasenaCorrecta(String contrasena) {
 		return this.contrasena.equals(contrasena);
+	}
+
+	@Override
+	public boolean cambiarContrasena(String contrasena) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ApiFuture<QuerySnapshot> query = db.collection("PersonalAdmin").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents) {
+			if (this.getIDFuncionario().equals(document.getString("IdFuncionario"))) {
+				if (!document.getString("contrasena").equals(contrasena)) {
+					document.getReference().update("contrasena", contrasena);
+					System.out.println("contraseña actualizada!");
+					return true;
+				} else {
+					System.out.println("La contraseña debe ser diferenete a la anterior!");
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setContentText("La contraseña debe ser diferenete a la anterior!");
+					alert.show();
+				}
+			}
+		}
+		return false;
 	}
 }

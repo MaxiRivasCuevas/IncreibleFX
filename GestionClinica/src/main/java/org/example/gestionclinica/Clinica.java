@@ -550,6 +550,37 @@ public class Clinica {
 			}
 		}
 	}
+
+	public static void cambiarContrasenaEmpleado(ActionEvent event, String usuario) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ArrayList<Funcionario> funcionarios = cargarDatosPersonal(db);
+		Funcionario empleadoObjeto = null;
+		for (Funcionario funcionario : funcionarios) {
+			if (funcionario.getNombre().equals(usuario)) {
+				empleadoObjeto = funcionario;
+			}
+		}
+		cambioEscenaCambioContrasenaEmpleado(event, "CambioContrasena.fxml", "Cambio de Contraseña", empleadoObjeto);
+	}
+
+	public static void cambioEscenaCambioContrasenaEmpleado(ActionEvent event, String fxmlFile, String title, Funcionario empleado){
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle(title);
+			stage.setScene(new Scene(root));
+			CambioContraSenaController cambioContraSenaController = loader.getController();
+			cambioContraSenaController.setInfo(empleado);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 class SampleComparator implements Comparator<Funcionario> {
