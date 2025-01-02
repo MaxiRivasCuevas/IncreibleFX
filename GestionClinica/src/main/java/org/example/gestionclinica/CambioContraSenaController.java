@@ -40,7 +40,7 @@ public class CambioContraSenaController implements Initializable {
                 if (!tfContrasenaNueva.getText().equals("") && !tfContrasenaRepetida.getText().equals("")) {
                     if (tfContrasenaNueva.getText().equals(tfContrasenaRepetida.getText())) {
                         if (funcionario != null) {
-                            if (funcionario.getClass() == PersonalMedico.class){
+                            if (funcionario.getClass() == PersonalMedico.class) {
                                 PersonalMedico personalMedico = (PersonalMedico) funcionario;
                                 if (!personalMedico.contrasenaCorrecta(tfContrasenaNueva.getText())) {
                                     try {
@@ -48,9 +48,14 @@ public class CambioContraSenaController implements Initializable {
                                     } catch (ExecutionException | InterruptedException e) {
                                         throw new RuntimeException(e);
                                     }
+                                } else {
+                                    System.out.println("La contraseña debe ser diferente a la anterior!");
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setContentText("La contraseña debe ser diferente a la anterior!");
+                                    alert.show();
                                 }
                             }
-                            if (funcionario.getClass() == PersonalAdmin.class){
+                            if (funcionario.getClass() == PersonalAdmin.class) {
                                 PersonalAdmin personalAdmin = (PersonalAdmin) funcionario;
                                 if (!personalAdmin.contrasenaCorrecta(tfContrasenaNueva.getText())) {
                                     try {
@@ -58,23 +63,42 @@ public class CambioContraSenaController implements Initializable {
                                     } catch (ExecutionException | InterruptedException e) {
                                         throw new RuntimeException(e);
                                     }
+                                } else {
+                                    System.out.println("La contraseña debe ser diferente a la anterior!");
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setContentText("La contraseña debe ser diferente a la anterior!");
+                                    alert.show();
                                 }
                             }
-                            if (funcionario.getClass() == PersonalNoMedicoInterno.class){
+                            if (funcionario.getClass() == PersonalNoMedicoInterno.class) {
                                 PersonalNoMedicoInterno personalNoMedicoInterno = (PersonalNoMedicoInterno) funcionario;
                                 if (!personalNoMedicoInterno.contrasenaCorrecta(tfContrasenaNueva.getText())) {
-                                    try {
-                                        operacionExitosa = personalNoMedicoInterno.cambiarContrasena(tfContrasenaNueva.getText());
-                                    } catch (ExecutionException | InterruptedException e) {
-                                        throw new RuntimeException(e);
+                                    if (!personalNoMedicoInterno.contrasenaCorrecta(tfContrasenaNueva.getText())) {
+                                        try {
+                                            operacionExitosa = personalNoMedicoInterno.cambiarContrasena(tfContrasenaNueva.getText());
+                                        } catch (ExecutionException | InterruptedException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    } else {
+                                        System.out.println("La contraseña debe ser diferente a la anterior!");
+                                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                                        alert.setContentText("La contraseña debe ser diferente a la anterior!");
+                                        alert.show();
                                     }
                                 }
                             }
                         } else {
-                            try {
-                                operacionExitosa = paciente.cambiarContrasena(tfContrasenaNueva.getText());
-                            } catch (ExecutionException | InterruptedException e) {
-                                throw new RuntimeException(e);
+                            if (!paciente.contrasenaCorrecta(tfContrasenaNueva.getText())) {
+                                try {
+                                    operacionExitosa = paciente.cambiarContrasena(tfContrasenaNueva.getText());
+                                } catch (ExecutionException | InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                System.out.println("La contraseña debe ser diferente a la anterior!");
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setContentText("La contraseña debe ser diferente a la anterior!");
+                                alert.show();
                             }
                         }
                     } else {
@@ -105,5 +129,12 @@ public class CambioContraSenaController implements Initializable {
     public void setInfo(Paciente paciente) {
         this.paciente = paciente;
         this.funcionario = null;
+    }
+
+    public void mensajeErrorContrasenaIgualAAntigua(){
+            System.out.println("La contraseña debe ser diferenete a la anterior!");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("La contraseña debe ser diferenete a la anterior!");
+            alert.show();
     }
 }

@@ -129,10 +129,7 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 					System.out.println("contraseña actualizada!");
 					return true;
 				} else {
-					System.out.println("La contraseña debe ser diferenete a la anterior!");
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setContentText("La contraseña debe ser diferenete a la anterior!");
-					alert.show();
+					return false;
 				}
 			}
 		}
