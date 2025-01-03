@@ -1,14 +1,14 @@
 package org.example.gestionclinica.clientes;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.example.gestionclinica.Clinica.inicializarFirebase;
@@ -124,5 +124,24 @@ public class Paciente {
 			}
 		}
 		return false;
+	}
+
+	public static void registarPaciente(String RUT, String nombre, String contrasena, int edad) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		Map<String,Object> data = new HashMap<>();
+		data.put("RUT",RUT);
+		data.put("nombre",nombre);
+		data.put("contrasena",contrasena);
+		data.put("edad",edad);
+		data.put("enfermedadCronica","");
+		data.put("historial","");
+		data.put("medicoTratante","");
+
+		DocumentReference docRef = db.collection("Pacientes").document();
+		ApiFuture<WriteResult> result = docRef.set(data);
+		System.out.println("Tiempo de actualizacion: " + result.get().getUpdateTime());
 	}
 }

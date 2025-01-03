@@ -16,6 +16,7 @@
             <Label fx:id="lableRut" layoutX="69.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
             <Label layoutX="221.0" layoutY="36.0" text="Edad:" textFill="#e4d7d7" />
             <Label fx:id="labelEdad" layoutX="251.0" layoutY="36.0" text="Null" textFill="#e4d7d7" />
+            <Button fx:id="buttonCambioContrasena" layoutX="358.0" layoutY="23.0" mnemonicParsing="false" text="Cambiar Contraseña" />
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">

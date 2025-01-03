@@ -6,13 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-public class SesionPaciente implements Initializable {
+public class SesionRegistroPacienteController implements Initializable {
     @FXML
     private Button buttonCerrarSesion;
 
@@ -20,56 +19,49 @@ public class SesionPaciente implements Initializable {
     private Button buttonCambioContrasena;
 
     @FXML
+    private Button buttonAgregarPaciente;
+
+    @FXML
+    private Button buttonAgregarCita;
+
+    @FXML
+    private Button buttonAgregarPacienteYCita;
+
+    @FXML
     private Button buttonCancelarCita;
 
     @FXML
     private Label lableUsuario;
-
-    @FXML
-    private Label lableRut;
-
-    @FXML
-    private Label labelEdad;
-
-    @FXML
-    private Label lableCitas;
-
-    @FXML
-    private Label lableEnfermedadesCronicas;
-
-    @FXML
-    private Label lableMedicoTrantante;
-
-    @FXML
-    private TextField tfNumCitaACancelar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttonCerrarSesion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent event) {
-                Clinica.cambioEscenaPaciente(event, "Login.fxml", "Inicio de Sesion!", null,null,null);
+                Clinica.cambioEscenaPA(event, "Login.fxml", "Inicio de Sesion!", null, 9);
             }
         });
 
-        buttonCambioContrasena.setOnAction(new EventHandler<javafx.event.ActionEvent>(){
+        buttonCambioContrasena.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent event) {
                 try {
-                    Clinica.cambiarContrasenaPaciente(event,lableUsuario.getText());
+                    Clinica.cambiarContrasenaEmpleado(event, lableUsuario.getText());
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
+
+        buttonAgregarPaciente.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                Clinica.agregarPaciente(event);
+            }
+        });
     }
 
-    public void setInfo(String usuario, String Rut, int edad, String citas, String enfermedadesCronicas, String medicoTrantante) {
+    public void setInfo(String usuario) {
         lableUsuario.setText(usuario);
-        lableRut.setText(Rut);
-        labelEdad.setText(String.valueOf(edad));
-        lableCitas.setText(citas);
-        lableEnfermedadesCronicas.setText(enfermedadesCronicas);
-        lableMedicoTrantante.setText(medicoTrantante);
     }
 }

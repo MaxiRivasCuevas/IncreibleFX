@@ -330,6 +330,30 @@ public class Clinica {
 		stage.show();
 	}
 
+	public static void cambioEscenaRegistrosPacientesYCitas(ActionEvent event, String fxmlFile, String title, String usuario){
+		Parent root = null;
+		if (usuario != null){
+			try {
+				FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+				root = loader.load();
+				SesionRegistroPacienteController sesionRegistroPacienteController = loader.getController();
+				sesionRegistroPacienteController.setInfo(usuario);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				root = FXMLLoader.load(Clinica.class.getResource(fxmlFile));
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600,400));
+		stage.show();
+	}
+
 	public static void cambioEscenaPaciente(ActionEvent event, String fxmlFile, String title, String usuario, ArrayList<Funcionario> funcionarios, ArrayList<Paciente> pacientes){
 		Parent root = null;
 		if (usuario != null){
@@ -406,6 +430,11 @@ public class Clinica {
 					usuarioValido = true;
 					nivelAcceso = funcionario.getNivelAcceso();
 				}
+			}else if (funcionario.getClass() == PersonalNoMedicoInterno.class) {
+				if (funcionario.getNombre().equals(usuario) && ((PersonalNoMedicoInterno) funcionario).contrasenaCorrecta(contrasena)) {
+					usuarioValido = true;
+					nivelAcceso = funcionario.getNivelAcceso();
+				}
 			}
 		}
 		for (Paciente paciente : pacientes) {
@@ -418,7 +447,9 @@ public class Clinica {
 			cambioEscenaPA(event, "SesionPA.fxml", "Bienvenido!", usuario, nivelAcceso);
 		} else if (usuarioValido && nivelAcceso == 2) {
 			cambioEscenaPM(event, "SesionPM.fxml", "Bienvenido!", usuario, db, funcionarios, pacientes,nivelAcceso);
-		} else if (usuarioValido && nivelAcceso == 9) {
+		} else if (usuarioValido && nivelAcceso == 3) {
+			cambioEscenaRegistrosPacientesYCitas(event, "SesionRegistroPaciente.fxml", "Bienvenido!", usuario);
+		}else if (usuarioValido && nivelAcceso == 9) {
 			cambioEscenaPaciente(event, "SesionPaciente.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
 		} else {
 			System.out.println("Usuario o Contraseña incorrecta");
@@ -563,10 +594,25 @@ public class Clinica {
 				empleadoObjeto = funcionario;
 			}
 		}
-		cambioEscenaCambioContrasenaEmpleado(event, "CambioContrasena.fxml", "Cambio de Contraseña", empleadoObjeto);
+		cambioEscenaCambioContrasenaEmpleado(event, "CambioContrasena.fxml", "Cambio de Contraseña", empleadoObjeto,null);
 	}
 
-	public static void cambioEscenaCambioContrasenaEmpleado(ActionEvent event, String fxmlFile, String title, Funcionario empleado){
+	public static void cambiarContrasenaPaciente(ActionEvent event, String usuario) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		ArrayList<Paciente> pacientes = cargarDatosPacientes(db, funcionariosQueSonMedicos(cargarDatosPersonalMedico(db)));
+		Paciente pacienteObjeto = null;
+		for (Paciente paciente : pacientes) {
+			if (paciente.getNombre().equals(usuario)) {
+				pacienteObjeto = paciente;
+			}
+		}
+		cambioEscenaCambioContrasenaEmpleado(event, "CambioContrasena.fxml", "Cambio de Contraseña",null, pacienteObjeto);
+	}
+
+	public static void cambioEscenaCambioContrasenaEmpleado(ActionEvent event, String fxmlFile, String title, Funcionario empleado, Paciente paciente){
 		Parent root = null;
 		try {
 			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
@@ -575,7 +621,31 @@ public class Clinica {
 			stage.setTitle(title);
 			stage.setScene(new Scene(root));
 			CambioContraSenaController cambioContraSenaController = loader.getController();
-			cambioContraSenaController.setInfo(empleado);
+			if (empleado != null) {
+				cambioContraSenaController.setInfo(empleado);
+				stage.show();
+			} else {
+				cambioContraSenaController.setInfo(paciente);
+				stage.show();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void agregarPaciente(ActionEvent event){
+		cambioEscenaAgregarPaciente(event,"AgregarPaciente.fxml","Agregar Paciente");
+	}
+
+	public static void cambioEscenaAgregarPaciente(ActionEvent event, String fxmlFile, String title){
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle(title);
+			stage.setScene(new Scene(root));
+			AgregarPacienteController agregarPacienteController = loader.getController();
 			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
