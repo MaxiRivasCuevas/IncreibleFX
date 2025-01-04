@@ -1,14 +1,13 @@
 package org.example.gestionclinica.clientes;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -95,5 +94,24 @@ public class Cita {
 		DocumentReference docRef = db.collection("Citas").document();
 		ApiFuture<WriteResult> result = docRef.set(data);
 		System.out.println("Tiempo de actualizacion: " + result.get().getUpdateTime());
+	}
+
+	public void eliminarCita() throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+
+		ApiFuture<QuerySnapshot> query = db.collection("Citas").get();
+		QuerySnapshot querySnapshot = query.get();
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents) {
+			if (this.getPaciente().getNombre().equals(document.getString("Paciente")) && this.getMedico().getNombre().equals(document.getString("Medico"))) {
+				if (this.fecha.equals(document.getString("fecha"))&&this.hora.equals(document.getString("hora"))) {
+					document.getReference().delete();
+					System.out.println("cita eliminada");
+				}
+			}
+		}
 	}
 }

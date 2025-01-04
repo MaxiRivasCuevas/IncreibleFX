@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.CancelarCitaController">
+    <children>
+        <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
+            <children>
+                <Label fx:id="lable" layoutX="33.0" layoutY="21.0" text="Paciente:" textFill="#ece8e8" />
+                <TextField fx:id="tfNombrePaciente" layoutX="356.0" layoutY="16.0" prefHeight="26.0" prefWidth="169.0" promptText="Nombre o RUT de paciente" />
+                <Button fx:id="buttonBuscar" layoutX="526.0" layoutY="16.0" mnemonicParsing="false" text="Buscar" />
+                <Button fx:id="buttonEliminar" layoutX="526.0" layoutY="73.0" mnemonicParsing="false" text="Eliminar" />
+                <Label fx:id="lablePaciente" layoutX="33.0" layoutY="42.0" text="Ninguno" textFill="#ece8e8" />
+                <Label fx:id="lableCitas2" layoutX="33.0" layoutY="91.0" text="Citas:" textFill="#ece8e8" />
+                <Label fx:id="lableCitas" layoutX="33.0" layoutY="109.0" text="Ninguna" textFill="#ece8e8" />
+            <TextField fx:id="tfNumCita" layoutX="428.0" layoutY="73.0" prefHeight="26.0" prefWidth="97.0" promptText="Numero de Cita" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

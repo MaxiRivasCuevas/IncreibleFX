@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -23,9 +22,6 @@ public class SesionRegistroPacienteController implements Initializable {
 
     @FXML
     private Button buttonAgregarCita;
-
-    @FXML
-    private Button buttonAgregarPacienteYCita;
 
     @FXML
     private Button buttonCancelarCita;
@@ -64,6 +60,13 @@ public class SesionRegistroPacienteController implements Initializable {
             @Override
             public void handle(javafx.event.ActionEvent event) {
                 Clinica.agregarCita(event);
+            }
+        });
+
+        buttonCancelarCita.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                Clinica.cancelarCita(event);
             }
         });
     }

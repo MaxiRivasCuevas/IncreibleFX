@@ -67,9 +67,9 @@ public class AgregarCitaController implements Initializable {
                     if (FirebaseApp.getApps().isEmpty()) {
                         inicializarFirebase();
                     }
+                    Firestore db = FirestoreClient.getFirestore();
                     ArrayList<PersonalMedico> medicos = new ArrayList<>();
                     ArrayList<Paciente> pacientes = new ArrayList<>();
-                    Firestore db = FirestoreClient.getFirestore();
                     try {
                         medicos = Clinica.funcionariosQueSonMedicos(Clinica.cargarDatosPersonalMedico(db));
                         pacientes = Clinica.cargarDatosPacientes(db, medicos);

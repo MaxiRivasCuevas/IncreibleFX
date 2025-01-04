@@ -19,9 +19,8 @@
         <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
             <children>
                 <Button fx:id="buttonAgregarPaciente" layoutX="102.0" layoutY="64.0" mnemonicParsing="false" text="Agregar Paciente" />
-            <Button fx:id="buttonAgregarCita" layoutX="360.0" layoutY="64.0" mnemonicParsing="false" text="Agregar Cita" />
-            <Button fx:id="buttonAgregarPacienteYCita" layoutX="102.0" layoutY="152.0" mnemonicParsing="false" text="Agregar Paciente y Cita" />
-            <Button fx:id="buttonCancelarCita" layoutX="360.0" layoutY="152.0" mnemonicParsing="false" text="Cancelar Cita" />
+            <Button fx:id="buttonAgregarCita" layoutX="388.0" layoutY="64.0" mnemonicParsing="false" text="Agregar Cita" />
+            <Button fx:id="buttonCancelarCita" layoutX="257.0" layoutY="174.0" mnemonicParsing="false" text="Cancelar Cita" />
             </children>
         </AnchorPane>
     </children>
