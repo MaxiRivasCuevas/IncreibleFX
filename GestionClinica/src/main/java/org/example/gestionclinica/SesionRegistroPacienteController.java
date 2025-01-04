@@ -59,6 +59,13 @@ public class SesionRegistroPacienteController implements Initializable {
                 Clinica.agregarPaciente(event);
             }
         });
+
+        buttonAgregarCita.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                Clinica.agregarCita(event);
+            }
+        });
     }
 
     public void setInfo(String usuario) {

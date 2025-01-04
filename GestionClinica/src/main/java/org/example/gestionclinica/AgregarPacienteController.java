@@ -79,4 +79,3 @@ public class AgregarPacienteController implements Initializable {
         return false;
     }
 }
-

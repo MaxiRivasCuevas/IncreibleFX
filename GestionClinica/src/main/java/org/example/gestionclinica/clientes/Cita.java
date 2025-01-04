@@ -1,6 +1,18 @@
 package org.example.gestionclinica.clientes;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.cloud.FirestoreClient;
 import org.example.gestionclinica.RRHH.PersonalMedico;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class Cita {
 	private String fecha;
@@ -68,5 +80,20 @@ public class Cita {
 	public String detalleString(){
 		return  "Fecha: " + fecha + "\n" +
 				"Hora: " + hora + "\n";
+	}
+
+	public static void registrarCita(String fecha, String hora, String paciente, String medico) throws ExecutionException, InterruptedException {
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+		Map<String,Object> data = new HashMap<>();
+		data.put("fecha", fecha);
+		data.put("hora", hora);
+		data.put("Paciente", paciente);
+		data.put("Medico", medico);
+		DocumentReference docRef = db.collection("Citas").document();
+		ApiFuture<WriteResult> result = docRef.set(data);
+		System.out.println("Tiempo de actualizacion: " + result.get().getUpdateTime());
 	}
 }

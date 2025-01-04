@@ -651,6 +651,24 @@ public class Clinica {
 			e.printStackTrace();
 		}
 	}
+
+	public static void agregarCita(ActionEvent event){
+		cambioEscenaAgregarCita(event,"AgregarCita.fxml","Creador de Citas");
+	}
+
+	public static void cambioEscenaAgregarCita(ActionEvent event, String fxmlFile, String title){
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			Stage stage = new Stage();
+			stage.setTitle(title);
+			stage.setScene(new Scene(root));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 class SampleComparator implements Comparator<Funcionario> {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="262.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.AgregarCitaController">
+    <children>
+        <AnchorPane fx:id="cbTipoEmpleado" prefHeight="330.0" prefWidth="307.0" style="-fx-background-color: #806600;">
+            <children>
+                <TextField fx:id="tfIdPaciente" layoutX="53.0" layoutY="38.0" promptText="Rut o Nombre Paciente" />
+                <TextField fx:id="tfIdMedico" layoutX="54.0" layoutY="79.0" promptText="Rut o Nombre Medico" />
+                <Button fx:id="buttonAgregar" layoutX="52.0" layoutY="264.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Agregar" />
+            <ComboBox fx:id="cbDia" layoutX="14.0" layoutY="135.0" prefHeight="26.0" prefWidth="66.0" promptText="Dia" />
+            <ComboBox fx:id="cbMes" layoutX="98.0" layoutY="135.0" prefHeight="26.0" prefWidth="66.0" promptText="Mes" />
+            <ComboBox fx:id="cbAnio" layoutX="181.0" layoutY="135.0" prefHeight="26.0" prefWidth="66.0" promptText="Año" />
+            <ComboBox fx:id="cbHora" layoutX="47.0" layoutY="199.0" prefHeight="26.0" prefWidth="66.0" promptText="HH" />
+            <ComboBox fx:id="cbMinuto" layoutX="131.0" layoutY="199.0" prefHeight="26.0" prefWidth="66.0" promptText="MM" />
+            <Label layoutX="14.0" layoutY="203.0" text="Hora:" />
+            <Label layoutX="17.0" layoutY="117.0" text="Fecha:" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
