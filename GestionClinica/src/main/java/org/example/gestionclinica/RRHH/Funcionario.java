@@ -58,5 +58,9 @@ public abstract class Funcionario {
 
 	public abstract void actualizarSueldoBruto(int sueldoBruto) throws ExecutionException, InterruptedException;
 
+	public int getSueldoBruto() {
+		return sueldoBruto;
+	}
+
 	public abstract void actualizarRol(String rol) throws ExecutionException, InterruptedException;
 }

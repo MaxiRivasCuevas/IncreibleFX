@@ -419,21 +419,25 @@ public class Clinica {
 		ArrayList<Paciente> pacientes = cargarDatosPacientes(db, funcionariosQueSonMedicos(funcionarios));
 		boolean usuarioValido = false;
 		int nivelAcceso = 9;
+		Funcionario funcionarioActual = null;
 		for (Funcionario funcionario : funcionarios) {
 			if (funcionario.getClass() == PersonalAdmin.class) {
 				if (funcionario.getNombre().equals(usuario) && ((PersonalAdmin) funcionario).contrasenaCorrecta(contrasena)) {
 					usuarioValido = true;
 					nivelAcceso = funcionario.getNivelAcceso();
+					funcionarioActual = funcionario;
 				}
 			} else if (funcionario.getClass() == PersonalMedico.class) {
 				if (funcionario.getNombre().equals(usuario) && ((PersonalMedico) funcionario).contrasenaCorrecta(contrasena)) {
 					usuarioValido = true;
 					nivelAcceso = funcionario.getNivelAcceso();
+					funcionarioActual = funcionario;
 				}
-			}else if (funcionario.getClass() == PersonalNoMedicoInterno.class) {
+			} else if (funcionario.getClass() == PersonalNoMedicoInterno.class) {
 				if (funcionario.getNombre().equals(usuario) && ((PersonalNoMedicoInterno) funcionario).contrasenaCorrecta(contrasena)) {
 					usuarioValido = true;
 					nivelAcceso = funcionario.getNivelAcceso();
+					funcionarioActual = funcionario;
 				}
 			}
 		}
@@ -449,7 +453,9 @@ public class Clinica {
 			cambioEscenaPM(event, "SesionPM.fxml", "Bienvenido!", usuario, db, funcionarios, pacientes,nivelAcceso);
 		} else if (usuarioValido && nivelAcceso == 3) {
 			cambioEscenaRegistrosPacientesYCitas(event, "SesionRegistroPaciente.fxml", "Bienvenido!", usuario);
-		}else if (usuarioValido && nivelAcceso == 9) {
+		} else if (usuarioValido && nivelAcceso == 4) {
+			cambioEscenaOtroFuncionario(event, "SesionOtroFuncionario.fxml", "Bienvenido!", funcionarioActual);
+		} else if (usuarioValido && nivelAcceso == 9) {
 			cambioEscenaPaciente(event, "SesionPaciente.fxml", "Bienvenido!", usuario, funcionarios, pacientes);
 		} else {
 			System.out.println("Usuario o Contraseña incorrecta");
@@ -686,6 +692,22 @@ public class Clinica {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void cambioEscenaOtroFuncionario(ActionEvent event, String fxmlFile, String title, Funcionario funcionario) {
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
+			root = loader.load();
+			SesionOtroFuncionarioController sesionOtroFuncionarioController = loader.getController();
+			sesionOtroFuncionarioController.setInfo(funcionario);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		stage.setTitle(title);
+		stage.setScene(new Scene(root, 600, 400));
+		stage.show();
 	}
 }
 

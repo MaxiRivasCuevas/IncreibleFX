@@ -31,8 +31,8 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 		throw new UnsupportedOperationException();
 	}
 
-	public void inscribirCita(int nivelAcceso, Paciente paciente) {
-
+	public int getVacaciones() {
+		return vacaciones;
 	}
 
 	@Override

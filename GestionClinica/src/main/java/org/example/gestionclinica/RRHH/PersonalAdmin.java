@@ -51,6 +51,10 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 		throw new UnsupportedOperationException();
 	}
 
+	public int getVacaciones() {
+		return vacaciones;
+	}
+
 	@Override
 	public int tomarVacaciones(int n) {
 		return 0;
