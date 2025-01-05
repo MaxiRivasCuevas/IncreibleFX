@@ -11,6 +11,8 @@ import org.example.gestionclinica.RRHH.PersonalMedico;
 import org.example.gestionclinica.RRHH.PersonalNoMedicoInterno;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
@@ -20,6 +22,9 @@ public class DetalleUnEmpleado implements Initializable {
 
     @FXML
     private TextField tfDiasVacaciones;
+
+    @FXML
+    private TextArea tfAmonestacionOFelicitacion;
 
     @FXML
     private Button buttonTomarVaca;
@@ -127,6 +132,42 @@ public class DetalleUnEmpleado implements Initializable {
                     System.out.println("Ingrese algun rol!");
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setContentText("Ingrese algun rol!");
+                    alert.show();
+                }
+            }
+        });
+
+        buttonAmonestar.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if (!tfAmonestacionOFelicitacion.getText().isEmpty()) {
+                    funcionario.amonestar("Amonestacion el " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + " por: " + tfAmonestacionOFelicitacion.getText() + "\n");
+                    System.out.println("Amonestacion Realizada!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Amonestacion Realizada!");
+                    alert.show();
+                } else {
+                    System.out.println("Ingrese algun entrada!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Ingrese algun entrada!");
+                    alert.show();
+                }
+            }
+        });
+
+        buttonFelicitar.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if (!tfAmonestacionOFelicitacion.getText().isEmpty()) {
+                    funcionario.felicitar("Felicitacion el " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + " por: " + tfAmonestacionOFelicitacion.getText() + "\n");
+                    System.out.println("Felicitacion Realizada!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Felicitacion Realizada!");
+                    alert.show();
+                } else {
+                    System.out.println("Ingrese algun entrada!");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Ingrese algun entrada!");
                     alert.show();
                 }
             }

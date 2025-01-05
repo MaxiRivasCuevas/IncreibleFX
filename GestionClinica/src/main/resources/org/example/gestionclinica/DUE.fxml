@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -26,6 +27,7 @@
                </children>
             </AnchorPane>
             <TextField fx:id="tfDiasVacaciones" layoutX="234.0" layoutY="25.0" prefHeight="26.0" prefWidth="39.0" promptText="Dias" />
+            <TextArea fx:id="tfAmonestacionOFelicitacion" layoutX="200.0" layoutY="217.0" prefHeight="91.0" prefWidth="186.0" />
             </children>
         </AnchorPane>
     </children>
