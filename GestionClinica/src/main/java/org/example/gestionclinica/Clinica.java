@@ -116,12 +116,21 @@ public class Clinica {
 		ArrayList<Funcionario> funcionarios = new ArrayList<>();
 		ArrayList<Funcionario> personalMedico = cargarDatosPersonalMedico(db);
         funcionarios.addAll(personalMedico);
+		for (Funcionario medico : personalMedico){
+			((PersonalMedico) medico).calcularVacaciones();
+		}
 
 		ArrayList<Funcionario> personalAdmin = cargarDatosPersonalAdmin(db);
 		funcionarios.addAll(personalAdmin);
+		for (Funcionario admin : personalAdmin){
+			((PersonalAdmin) admin).calcularVacaciones();
+		}
 
 		ArrayList<Funcionario> personalNoMedicoInterno = cargarDatosPersonalNoMedicoInterno(db);
 		funcionarios.addAll(personalNoMedicoInterno);
+		for (Funcionario noMedico : personalNoMedicoInterno){
+			((PersonalNoMedicoInterno) noMedico).calcularVacaciones();
+		}
 
 		ArrayList<Funcionario> personalNoMedicoExterno = cargarDatosPersonalNoMedicoExterno(db);
 		funcionarios.addAll(personalNoMedicoExterno);

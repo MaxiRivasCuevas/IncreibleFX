@@ -7,11 +7,10 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.scene.control.Alert;
-import org.example.gestionclinica.clientes.Paciente;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class PersonalNoMedicoInterno extends Funcionario implements PersonalInterno {
@@ -36,8 +35,31 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 	}
 
 	@Override
-	public int tomarVacaciones(int n) {
-		return 0;
+	public boolean tomarVacaciones(int n) {
+		if (vacaciones >= n) {
+			super.agregarEntradaAHistorial("Tomo vacaciones por: " + String.valueOf(vacaciones));
+			if (FirebaseApp.getApps().isEmpty()) {
+				inicializarFirebase();
+			}
+			Firestore db = FirestoreClient.getFirestore();
+
+			ApiFuture<QuerySnapshot> query = db.collection("PersonalNoMedicoInterno").get();
+			QuerySnapshot querySnapshot = null;
+			try {
+				querySnapshot = query.get();
+			} catch (InterruptedException | ExecutionException e) {
+				throw new RuntimeException(e);
+			}
+			List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+			for (QueryDocumentSnapshot document : documents) {
+				if (this.getIDFuncionario().equals(document.getString("IdFuncionario"))) {
+					document.getReference().update("historial", super.getHistorial());
+					System.out.println("vacaciones registradas");
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -114,5 +136,25 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void calcularVacaciones() {
+		int n = 0;
+		String [] fechaInicio = super.getFechaContratacion().split("-");
+		int diaInicio = Integer.parseInt(fechaInicio[0]);
+		int mesInicio = Integer.parseInt(fechaInicio[1]);
+		int anioInicio = Integer.parseInt(fechaInicio[2]);
+
+		String fechaActual = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+		String [] fechaActualDesgolsada = fechaActual.split("-");
+		int diaActual = Integer.parseInt(fechaActualDesgolsada[0]);
+		int mesActual = Integer.parseInt(fechaActualDesgolsada[1]);
+		int anioActual = Integer.parseInt(fechaActualDesgolsada[2]);
+
+		if ((anioActual - anioInicio) > 0){
+			n += (anioActual-anioInicio) * 15 ;
+		}
+		this.vacaciones = n;
 	}
 }

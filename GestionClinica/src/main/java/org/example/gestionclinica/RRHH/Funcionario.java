@@ -62,5 +62,17 @@ public abstract class Funcionario {
 		return sueldoBruto;
 	}
 
+	public String getFechaContratacion() {
+		return fechaContratacion;
+	}
+
+	public String getHistorial() {
+		return historial;
+	}
+
+	public void agregarEntradaAHistorial(String entrada) {
+		this.historial += entrada;
+	};
+
 	public abstract void actualizarRol(String rol) throws ExecutionException, InterruptedException;
 }

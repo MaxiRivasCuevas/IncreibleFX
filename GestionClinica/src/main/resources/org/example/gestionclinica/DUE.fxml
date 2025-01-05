@@ -25,6 +25,7 @@
                   <Label layoutX="34.0" layoutY="26.0" text="En caso de cambiar algo:" />
                </children>
             </AnchorPane>
+            <TextField fx:id="tfDiasVacaciones" layoutX="234.0" layoutY="25.0" prefHeight="26.0" prefWidth="39.0" promptText="Dias" />
             </children>
         </AnchorPane>
     </children>

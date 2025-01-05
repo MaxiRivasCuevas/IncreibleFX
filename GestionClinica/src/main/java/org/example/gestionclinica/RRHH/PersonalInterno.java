@@ -8,7 +8,7 @@ public interface PersonalInterno {
 	 * 
 	 * @param n
 	 */
-	int tomarVacaciones(int n);
+	boolean tomarVacaciones(int n);
 
 	/**
 	 * 
@@ -20,4 +20,5 @@ public interface PersonalInterno {
 
 	boolean cambiarContrasena(String contrasena) throws ExecutionException, InterruptedException;
 
+	void calcularVacaciones();
 }
