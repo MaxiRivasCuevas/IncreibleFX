@@ -84,10 +84,36 @@ public class Clinica {
 		QuerySnapshot querySnapshot = query.get();
 		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
 		for (QueryDocumentSnapshot document : documents){
-			citas.add(new Cita(document.getString("fecha")
-					, document.getString("hora")
-					, encontrarPaciente(document.getString("Paciente"),pacientes)
-					, encontrarMedico(document.getString("Medico"), medicos)));
+			String [] fechaCita = document.getString("fecha").split("-");
+			int diaCita = Integer.parseInt(fechaCita[0]);
+			int mesCita = Integer.parseInt(fechaCita[1]);
+			int anioCita = Integer.parseInt(fechaCita[2]);
+
+			String fechaActual = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+			String [] fechaActualDesgolsada = fechaActual.split("-");
+			int diaActual = Integer.parseInt(fechaActualDesgolsada[0]);
+			int mesActual = Integer.parseInt(fechaActualDesgolsada[1]);
+			int anioActual = Integer.parseInt(fechaActualDesgolsada[2]);
+
+			boolean agregarCita = false;
+			if (anioActual < anioCita){
+				agregarCita = true;
+			} else if (anioActual == anioCita) {
+				if (mesActual < mesCita){
+					agregarCita = true;
+				} else if (mesActual == mesCita) {
+					if (diaActual <= diaCita){
+						agregarCita = true;
+					}
+				}
+			}
+
+			if (agregarCita) {
+				citas.add(new Cita(document.getString("fecha")
+						, document.getString("hora")
+						, encontrarPaciente(document.getString("Paciente"), pacientes)
+						, encontrarMedico(document.getString("Medico"), medicos)));
+			}
 		}
 		return  citas;
 	}
@@ -308,7 +334,7 @@ public class Clinica {
 				int n = 0;
 				for (Cita cita : citas){
 					if (cita.getMedico().getNombre().equals(usuario)){
-						citasString += "N°" + n + " A las: " + cita.getHora() + "\n"
+						citasString += "N°" + n + "El " + cita.getFecha() + " a las " + cita.getHora() + "\n"
 								    + "    con " +cita.getPaciente().getNombre()+"\n";
 						n++;
 					}

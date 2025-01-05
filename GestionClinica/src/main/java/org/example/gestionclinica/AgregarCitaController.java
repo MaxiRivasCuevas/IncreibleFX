@@ -16,9 +16,10 @@ import javafx.stage.Stage;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 import org.example.gestionclinica.clientes.Cita;
 import org.example.gestionclinica.clientes.Paciente;
-
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
@@ -48,7 +49,6 @@ public class AgregarCitaController implements Initializable {
 
     @FXML
     private ComboBox<String> cbMinuto;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,14 +89,40 @@ public class AgregarCitaController implements Initializable {
                         }
                     }
                     if (personalMedicoActual != null && pacienteActual != null) {
-                        try {
-                            String fecha = cbDia.getValue() + "-" + cbMes.getValue() + "-" + cbAnio.getValue();
-                            String hora = cbHora.getValue() + ":" + cbMinuto.getValue();
-                            Cita.registrarCita(fecha, hora, pacienteActual.getNombre(), personalMedicoActual.getNombre());
-                            Stage stage = (Stage) buttonAgregar.getScene().getWindow();
-                            stage.close();
-                        } catch (ExecutionException | InterruptedException e) {
-                            throw new RuntimeException(e);
+                        String fechaActual = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                        String [] fechaActualDesgolsada = fechaActual.split("-");
+                        int diaActual = Integer.parseInt(fechaActualDesgolsada[0]);
+                        int mesActual = Integer.parseInt(fechaActualDesgolsada[1]);
+                        int anioActual = Integer.parseInt(fechaActualDesgolsada[2]);
+                        boolean agregarCita = false;
+
+                        if (anioActual < Integer.parseInt(cbAnio.getValue())) {
+                            agregarCita = true;
+                        } else if (anioActual == Integer.parseInt(cbAnio.getValue())){
+                            if (mesActual < Integer.parseInt(cbMes.getValue())) {
+                                agregarCita = true;
+                            } else if (mesActual == Integer.parseInt(cbMes.getValue())){
+                                if (diaActual <= Integer.parseInt(cbDia.getValue())) {
+                                    agregarCita = true;
+                                }
+                            }
+                        }
+
+                        if (agregarCita) {
+                            try {
+                                String fecha = cbDia.getValue() + "-" + cbMes.getValue() + "-" + cbAnio.getValue();
+                                String hora = cbHora.getValue() + ":" + cbMinuto.getValue();
+                                Cita.registrarCita(fecha, hora, pacienteActual.getNombre(), personalMedicoActual.getNombre());
+                                Stage stage = (Stage) buttonAgregar.getScene().getWindow();
+                                stage.close();
+                            } catch (ExecutionException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            System.out.println("No pueden ingresarse fechas pasadas!");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setContentText("No pueden ingresarse fechas pasadas!");
+                            alert.show();
                         }
                     } else if (pacienteActual == null) {
                         System.out.println("Paciente no encontrado!");

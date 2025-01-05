@@ -23,7 +23,7 @@
         </AnchorPane>
         <AnchorPane prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #806600;">
             <children>
-                <Label layoutX="33.0" layoutY="21.0" text="Citas de Hoy:" textFill="#ece8e8" />
+                <Label layoutX="33.0" layoutY="21.0" text="Citas Proximas:" textFill="#ece8e8" />
                 <Label fx:id="lableCitas" layoutX="33.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
             <TextField fx:id="tfNumCita" layoutX="406.0" layoutY="16.0" prefHeight="26.0" prefWidth="98.0" promptText="Numero de cita" />
             <Button fx:id="buttonBusqueda" layoutX="504.0" layoutY="16.0" mnemonicParsing="false" text="Buscar" />
