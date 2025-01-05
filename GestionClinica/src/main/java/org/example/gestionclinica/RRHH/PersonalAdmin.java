@@ -57,7 +57,7 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 	@Override
 	public boolean tomarVacaciones(int n) {
 		if (vacaciones >= n) {
-			super.agregarEntradaAHistorial("Tomo vacaciones por: " + String.valueOf(vacaciones));
+			super.agregarEntradaAHistorial("Tomo vacaciones por: " + String.valueOf(n) + "\n");
 			if (FirebaseApp.getApps().isEmpty()) {
 				inicializarFirebase();
 			}
@@ -90,7 +90,7 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 	@Override
 	public String toString() {
 		return super.toString() +
-				"NivelAcceso: " + nivelAcceso + "\n" +
+				"Nivel de Acceso: " + nivelAcceso + "\n" +
 				"Vacaciones: " + vacaciones + "\n";
 	}
 
@@ -187,7 +187,13 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 			}
 		}
 
-
+		String debeTener = "Tomo vacaciones por: ";
+		String [] vacionesTomadas = super.getHistorial().split("\n");
+		for (String vacacion : vacionesTomadas) {
+			if (vacacion.contains(debeTener)) {
+				n -= Integer.parseInt(vacacion.substring(vacacion.lastIndexOf(" ") + 1));
+			}
+		}
 		this.vacaciones = n;
 	}
 }

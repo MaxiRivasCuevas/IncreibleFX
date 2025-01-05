@@ -36,9 +36,9 @@ public abstract class Funcionario {
 	public String toString() {
 		return  "Rut: " + IDFuncionario + "\n" +
 				"Nombre: " + nombre + "\n" +
-				"Historial: " + historial + "\n" +
-				"SueldoBruto: " + sueldoBruto + "\n" +
-				"FechaContratacion: " + fechaContratacion + "\n" +
+				"Historial: " + historial +
+				"Sueldo Bruto: " + sueldoBruto + "\n" +
+				"Fecha de Contratacion: " + fechaContratacion + "\n" +
 				"Rol: " + rol + "\n";
 	}
 

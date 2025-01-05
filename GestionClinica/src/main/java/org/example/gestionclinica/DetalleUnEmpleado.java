@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.example.gestionclinica.RRHH.Funcionario;
+import org.example.gestionclinica.RRHH.PersonalAdmin;
+import org.example.gestionclinica.RRHH.PersonalMedico;
+import org.example.gestionclinica.RRHH.PersonalNoMedicoInterno;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,6 +17,9 @@ import java.util.concurrent.ExecutionException;
 public class DetalleUnEmpleado implements Initializable {
     @FXML
     private TextField tfCambio;
+
+    @FXML
+    private TextField tfDiasVacaciones;
 
     @FXML
     private Button buttonTomarVaca;
@@ -51,6 +57,41 @@ public class DetalleUnEmpleado implements Initializable {
 
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
+                }
+            }
+        });
+
+        buttonTomarVaca.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if (esInt(tfDiasVacaciones.getText())) {
+                    boolean operacionExitosa = false;
+                    if (Integer.parseInt(tfDiasVacaciones.getText()) >= 1) {
+                        if (funcionario.getClass() == PersonalMedico.class) {
+                            if (Integer.parseInt(tfDiasVacaciones.getText()) <= ((PersonalMedico) funcionario).getVacaciones()) {
+                                operacionExitosa = ((PersonalMedico) funcionario).tomarVacaciones(Integer.parseInt(tfDiasVacaciones.getText()));
+                            }
+                        } else if (funcionario.getClass() == PersonalAdmin.class) {
+                            if (Integer.parseInt(tfDiasVacaciones.getText()) <= ((PersonalAdmin) funcionario).getVacaciones()) {
+                                operacionExitosa = ((PersonalAdmin) funcionario).tomarVacaciones(Integer.parseInt(tfDiasVacaciones.getText()));
+                            }
+                        } else if (funcionario.getClass() == PersonalNoMedicoInterno.class) {
+                            if (Integer.parseInt(tfDiasVacaciones.getText()) <= ((PersonalNoMedicoInterno) funcionario).getVacaciones()) {
+                                operacionExitosa = ((PersonalNoMedicoInterno) funcionario).tomarVacaciones(Integer.parseInt(tfDiasVacaciones.getText()));
+                            }
+                        }
+                    } else {
+                        System.out.println("Numero de vacaciones debe ser mayor que 0!");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("Numero de vacaciones debe ser mayor que 0!");
+                        alert.show();
+                    }
+                    if (!operacionExitosa && Integer.parseInt(tfDiasVacaciones.getText()) > 0) {
+                        System.out.println("No puede tomar vacaciones por mas dias de los disponibles!");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("No puede tomar vacaciones por mas dias de los disponibles!");
+                        alert.show();
+                    }
                 }
             }
         });

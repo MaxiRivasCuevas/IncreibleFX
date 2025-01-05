@@ -25,19 +25,21 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 		this.vacaciones = vacaciones;
 	}
 
-	public void inscribirPaciente(int nivelAcceso) {
-		// TODO - implement PersonalNoMedicoInterno.inscribirPaciente
-		throw new UnsupportedOperationException();
-	}
-
 	public int getVacaciones() {
 		return vacaciones;
 	}
 
 	@Override
+	public String toString() {
+		return super.toString() +
+				"Nivel de Acceso: " + nivelAcceso + "\n" +
+				"Vacaciones: " + vacaciones + "\n";
+	}
+
+	@Override
 	public boolean tomarVacaciones(int n) {
 		if (vacaciones >= n) {
-			super.agregarEntradaAHistorial("Tomo vacaciones por: " + String.valueOf(vacaciones));
+			super.agregarEntradaAHistorial("Tomo vacaciones por: " + String.valueOf(n) + "\n");
 			if (FirebaseApp.getApps().isEmpty()) {
 				inicializarFirebase();
 			}
@@ -153,7 +155,22 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 		int anioActual = Integer.parseInt(fechaActualDesgolsada[2]);
 
 		if ((anioActual - anioInicio) > 0){
-			n += (anioActual-anioInicio) * 15 ;
+			n += (anioActual - anioInicio - 1) * 15 ;
+			if (mesActual > mesInicio){
+				n += 15;
+			} else if (mesActual == mesInicio){
+				if (diaActual >= diaInicio){
+					n += 15;
+				}
+			}
+		}
+
+		String debeTener = "Tomo vacaciones por: ";
+		String [] vacionesTomadas = super.getHistorial().split("\n");
+		for (String vacacion : vacionesTomadas) {
+			if (vacacion.contains(debeTener)) {
+				n -= Integer.parseInt(vacacion.substring(vacacion.lastIndexOf(" ") + 1));
+			}
 		}
 		this.vacaciones = n;
 	}
