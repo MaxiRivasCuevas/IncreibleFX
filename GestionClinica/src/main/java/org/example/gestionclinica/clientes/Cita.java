@@ -5,12 +5,10 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
 import org.example.gestionclinica.RRHH.PersonalMedico;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class Cita {
@@ -24,32 +22,6 @@ public class Cita {
 		this.hora = hora;
 		this.paciente = paciente;
 		this.medico = medico;
-	}
-
-	public void agregarInfoPaciente(int nivelAcceso, Paciente paciente) {
-		if(nivelAcceso == 2) {
-
-		}else{
-			System.out.println("El nivel de acceso no es el requerido");
-		}
-	}
-
-	public void agregarEnfermedadCronica(int nivelAcceso) {
-		if(nivelAcceso == 2) {
-			String info = null;
-			//recibe la info
-			this.paciente.agregarEnfermedadCronica(info);
-		}else{
-			System.out.println("El nivel de acceso no es el requerido");
-		}
-	}
-
-	public void cambiarMedico(PersonalMedico medico, int nivelAcceso) {
-		if(nivelAcceso == 2) {
-			this.paciente.cambarMedicoTratante(medico);
-		}else{
-			System.out.println("El nivel de acceso no es el requerido");
-		}
 	}
 
 	public Paciente getPaciente() {
@@ -70,10 +42,9 @@ public class Cita {
 
 	@Override
 	public String toString() {
-		return  "fecha: " + fecha + "\n" +
-				"hora: " + hora + "\n" +
-				"paciente: " + paciente.getNombre() + "\n" +
-				"medico: " + medico.getNombre() + "\n";
+		return  "-Fecha: " + fecha + "\n" +
+				" Hora: " + hora + "\n" +
+				" Medico: " + medico.getNombre() + "\n";
 	}
 
 	public String detalleString(){

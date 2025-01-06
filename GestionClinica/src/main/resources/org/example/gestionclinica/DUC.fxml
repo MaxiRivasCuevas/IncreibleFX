@@ -17,8 +17,9 @@
             <TextArea fx:id="tfHistorial" layoutX="312.0" layoutY="74.0" prefHeight="200.0" prefWidth="214.0" promptText="agregar observacion y procedimiento" />
             <Button fx:id="buttonAgregaHist" layoutX="526.0" layoutY="74.0" mnemonicParsing="false" text="Agregar" />
             <Label fx:id="lableCita" layoutX="33.0" layoutY="42.0" text="Null" textFill="#ece8e8" />
-            <Label fx:id="lableCitas2" layoutX="33.0" layoutY="91.0" text="Detalle paciente:" textFill="#ece8e8" />
+            <Label fx:id="lableCitas2" layoutX="33.0" layoutY="91.0" text="Paciente:" textFill="#ece8e8" />
             <Label fx:id="lablePaciente" layoutX="33.0" layoutY="109.0" text="Null" textFill="#ece8e8" />
+            <Button fx:id="buttonDetallePaciente" layoutX="84.0" layoutY="290.0" mnemonicParsing="false" text="Ver Detalle Paciente" />
             </children>
         </AnchorPane>
     </children>

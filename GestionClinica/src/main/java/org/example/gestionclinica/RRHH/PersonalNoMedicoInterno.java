@@ -64,11 +64,6 @@ public class PersonalNoMedicoInterno extends Funcionario implements PersonalInte
 		return false;
 	}
 
-	@Override
-	public int inscribir(int nivelAcceso) {
-		return 0;
-	}
-
 	public int getNivelAcceso() {
 		return nivelAcceso;
 	}

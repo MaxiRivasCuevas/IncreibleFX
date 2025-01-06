@@ -6,8 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -18,9 +16,6 @@ public class SesionPaciente implements Initializable {
 
     @FXML
     private Button buttonCambioContrasena;
-
-    @FXML
-    private Button buttonCancelarCita;
 
     @FXML
     private Label lableUsuario;
@@ -36,12 +31,6 @@ public class SesionPaciente implements Initializable {
 
     @FXML
     private Label lableEnfermedadesCronicas;
-
-    @FXML
-    private Label lableMedicoTrantante;
-
-    @FXML
-    private TextField tfNumCitaACancelar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,12 +53,11 @@ public class SesionPaciente implements Initializable {
         });
     }
 
-    public void setInfo(String usuario, String Rut, int edad, String citas, String enfermedadesCronicas, String medicoTrantante) {
+    public void setInfo(String usuario, String Rut, int edad, String citas, String enfermedadesCronicas) {
         lableUsuario.setText(usuario);
         lableRut.setText(Rut);
         labelEdad.setText(String.valueOf(edad));
         lableCitas.setText(citas);
         lableEnfermedadesCronicas.setText(enfermedadesCronicas);
-        lableMedicoTrantante.setText(medicoTrantante);
     }
 }

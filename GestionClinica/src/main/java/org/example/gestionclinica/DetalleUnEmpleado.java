@@ -5,11 +5,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import org.example.gestionclinica.RRHH.Funcionario;
 import org.example.gestionclinica.RRHH.PersonalAdmin;
 import org.example.gestionclinica.RRHH.PersonalMedico;
 import org.example.gestionclinica.RRHH.PersonalNoMedicoInterno;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,9 +30,6 @@ public class DetalleUnEmpleado implements Initializable {
     private Button buttonTomarVaca;
 
     @FXML
-    private Button buttonFiniquito;
-
-    @FXML
     private Button buttonAmonestar;
 
     @FXML
@@ -46,6 +43,9 @@ public class DetalleUnEmpleado implements Initializable {
 
     @FXML
     private Button buttonDespedir;
+
+    @FXML
+    private Button buttonHistorial;
 
     @FXML
     private Label lableEmpleado;
@@ -172,7 +172,22 @@ public class DetalleUnEmpleado implements Initializable {
                 }
             }
         });
+
+        buttonHistorial.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Historial del Paciente");
+                alert.setHeaderText("Historial: ");
+                alert.setContentText(funcionario.getHistorial());
+                alert.setWidth(700);
+                alert.setHeight(700);
+                alert.show();
+                System.out.println("Mostrando Historial del Paciente!");
+            }
+        });
     }
+
     public void setInfo(String info, Funcionario funcionario) {
         System.out.println(info);
         lableEmpleado.setText(info);

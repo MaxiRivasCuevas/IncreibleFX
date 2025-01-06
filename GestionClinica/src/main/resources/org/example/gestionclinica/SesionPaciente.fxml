@@ -24,9 +24,7 @@
                 <Label layoutX="33.0" layoutY="21.0" text="Citas Proximas:" textFill="#ece8e8" />
                 <Label fx:id="lableCitas" layoutX="33.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
             <Label layoutX="209.0" layoutY="21.0" text="Enfermedades Cronicas:" textFill="#ece8e8" />
-            <Label layoutX="387.0" layoutY="21.0" text="Medico Tratante:" textFill="#ece8e8" />
             <Label fx:id="lableEnfermedadesCronicas" layoutX="209.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
-            <Label fx:id="lableMedicoTrantante" layoutX="387.0" layoutY="39.0" text="Null" textFill="#ece8e8" />
             <Label layoutX="181.0" layoutY="272.0" text="Para Agendar Nueva Cita Hable con el Personal" textFill="#ece8e8" underline="true" />
             </children>
         </AnchorPane>

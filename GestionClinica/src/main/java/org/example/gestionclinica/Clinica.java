@@ -400,18 +400,15 @@ public class Clinica {
 				int edad = 0;
 				String citas = null;
 				String enfermedadesCronicas = null;
-				String medicoTrante = null;
 				for (Paciente paciente : pacientes) {
 					if (paciente.getNombre().equals(usuario)) {
 						Rut = paciente.getRUT();
 						edad = paciente.getEdad();
 						citas = paciente.citasToString();
 						enfermedadesCronicas = paciente.getEnfermedadCronica();
-						if (medicoTrante != null){medicoTrante = paciente.getMedicoTratante().getNombre();}
-						else {medicoTrante = "Ninguno";}
 					}
 				}
-				sesionPaciente.setInfo(usuario, Rut, edad, citas, enfermedadesCronicas, medicoTrante);
+				sesionPaciente.setInfo(usuario, Rut, edad, citas, enfermedadesCronicas);
 				System.out.println(citas);
 			} catch (Exception e){
 				e.printStackTrace();
@@ -429,7 +426,7 @@ public class Clinica {
 		stage.show();
 	}
 
-	public static void cambioEscenaDetalleCita(ActionEvent event, String fxmlFile, String title, String usuario,String cita, String paciente) {
+	public static void cambioEscenaDetalleCita(ActionEvent event, String fxmlFile, String title, String usuario,String cita, Paciente paciente) {
 		Parent root = null;
 		try {
 			FXMLLoader loader = new FXMLLoader(Clinica.class.getResource(fxmlFile));
@@ -510,7 +507,7 @@ public class Clinica {
 		ArrayList<Cita> citas = cargarCitas(db,funcionariosQueSonMedicos(funcionarios),pacientes);
 
 		String infoCita = null;
-		String infoPaciente = null;
+		Paciente infoPaciente = null;
 		boolean citaExiste = false;
 		int i = 0;
 		for (Cita cita : citas){
@@ -518,7 +515,7 @@ public class Clinica {
 				i++;
 				if (i == n+1) {
 					infoCita = cita.detalleString();
-					infoPaciente = cita.getPaciente().toString();
+					infoPaciente = cita.getPaciente();
 					citaExiste = true;
 				}
 			}

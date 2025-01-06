@@ -14,10 +14,9 @@
                 <Label fx:id="lableCitas" layoutX="33.0" layoutY="21.0" text="Detalle Empleado:" textFill="#ece8e8" />
                 <Label fx:id="lableEmpleado" layoutX="33.0" layoutY="42.0" text="Null" textFill="#ece8e8" />
             <Button fx:id="buttonTomarVaca" layoutX="274.0" layoutY="25.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Tomar Vacaciones" />
-            <Button fx:id="buttonFiniquito" layoutX="273.0" layoutY="73.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Calculo Finiquito" />
             <Button fx:id="buttonAmonestar" layoutX="273.0" layoutY="126.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Amonestar" />
             <Button fx:id="buttonFelicitar" layoutX="274.0" layoutY="179.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Felicitar" />
-            <Button fx:id="buttonDespedir" layoutX="72.0" layoutY="283.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Despedir" />
+            <Button fx:id="buttonDespedir" layoutX="72.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Despedir" />
             <AnchorPane layoutX="400.0" layoutY="-3.0" prefHeight="337.0" prefWidth="200.0" style="-fx-background-color: #9933ff;">
                <children>
                   <TextField fx:id="tfCambio" layoutX="25.0" layoutY="62.0" promptText="Ingrese Cambio" />
@@ -28,6 +27,7 @@
             </AnchorPane>
             <TextField fx:id="tfDiasVacaciones" layoutX="234.0" layoutY="25.0" prefHeight="26.0" prefWidth="39.0" promptText="Dias" />
             <TextArea fx:id="tfAmonestacionOFelicitacion" layoutX="200.0" layoutY="217.0" prefHeight="91.0" prefWidth="186.0" />
+            <Button fx:id="buttonHistorial" layoutX="72.0" layoutY="226.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Ver Historial" />
             </children>
         </AnchorPane>
     </children>

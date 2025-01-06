@@ -6,7 +6,6 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -31,15 +30,9 @@ public abstract class Funcionario {
 		this.rol = rol;
 	}
 
-	public void felicitar() {
-		String motivo = null;
-		this.historial += motivo;
-	}
-
 	public String toString() {
 		return  "Rut: " + IDFuncionario + "\n" +
 				"Nombre: " + nombre + "\n" +
-				"Historial: " + historial +
 				"Sueldo Bruto: " + sueldoBruto + "\n" +
 				"Fecha de Contratacion: " + fechaContratacion + "\n" +
 				"Rol: " + rol + "\n";

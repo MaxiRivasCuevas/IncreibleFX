@@ -7,12 +7,10 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.cloud.FirestoreClient;
 import javafx.scene.control.Alert;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class PersonalMedico extends Funcionario implements PersonalInterno {
@@ -27,11 +25,6 @@ public class PersonalMedico extends Funcionario implements PersonalInterno {
 		this.nivelAcceso = nivelAcceso;
 		this.especialidad = especialidad;
 		this.vacaciones = vacaciones;
-	}
-
-	public void cambiarEspecialidad() {
-		// TODO - implement PersonalMedico.cambiarEspecialidad
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -60,11 +53,6 @@ public class PersonalMedico extends Funcionario implements PersonalInterno {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public int inscribir(int nivelAcceso) {
-		return 0;
 	}
 
 	public String toString() {

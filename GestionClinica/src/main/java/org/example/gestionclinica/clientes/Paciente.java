@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import static org.example.gestionclinica.Clinica.inicializarFirebase;
 
 public class Paciente {
@@ -20,7 +19,6 @@ public class Paciente {
 	private String historial;
 	private int edad;
 	private String enfermedadCronica;
-	private PersonalMedico medicoTratante;
 	private ArrayList<Cita> citas;
 
 	public Paciente(String RUT, String nombre, String contrasena, String historial, int edad, String enfermedadCronica) {
@@ -33,35 +31,59 @@ public class Paciente {
 		this.citas=new ArrayList<>();
 	}
 
-	public void setMedicoTratante(PersonalMedico medicoTratante) {
-		this.medicoTratante = medicoTratante;
-	}
-
 	public void agregarCita(Cita cita) {
 		this.citas.add(cita);
 	}
 
-	public void quitarCita(int nivelAcceso,int numCita) {
-		if(nivelAcceso<=2){
-			citas.remove((numCita-1));
-			System.out.println("Se removio la cita");
-		}else {
-			System.out.println("El nivel de acceso no es el requerido");
-		}
-	}
-
-	public void cambarMedicoTratante(PersonalMedico medico) {
-		this.medicoTratante=medico;
-		System.out.println("Se ha tranferido de medico");
-		System.out.println("Nuevo medico: "+medico.getNombre());
-	}
-
 	public void agregarInfo(String info){
 		this.historial += info + "\n";
+
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+
+		ApiFuture<QuerySnapshot> query = db.collection("Pacientes").get();
+		QuerySnapshot querySnapshot = null;
+		try {
+			querySnapshot = query.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents) {
+			if (this.getRUT().equals(document.getString("RUT"))) {
+				document.getReference().update("historial", this.historial);
+				System.out.println("Info Subida");
+			}
+		}
 	}
 
 	public void agregarEnfermedadCronica(String info){
 		this.enfermedadCronica += info + "\n";
+		if (FirebaseApp.getApps().isEmpty()) {
+			inicializarFirebase();
+		}
+		Firestore db = FirestoreClient.getFirestore();
+
+		ApiFuture<QuerySnapshot> query = db.collection("Pacientes").get();
+		QuerySnapshot querySnapshot = null;
+		try {
+			querySnapshot = query.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+		for (QueryDocumentSnapshot document : documents) {
+			if (this.getRUT().equals(document.getString("RUT"))) {
+				document.getReference().update("enfermedadCronica", this.enfermedadCronica);
+				System.out.println("Info Subida");
+			}
+		}
+	}
+
+	public String getHistorial() {
+		return historial;
 	}
 
 	public String citasToString(){
@@ -78,8 +100,7 @@ public class Paciente {
 				"Nombre: " + nombre + "\n" +
 				"Historial: " + historial + "\n" +
 				"Edad: " + edad + "\n" +
-				"EnfermedadCronica: " + enfermedadCronica + "\n" +
-				"MedicoTratante: " + medicoTratante + "\n";
+				"EnfermedadCronica: " + enfermedadCronica + "\n";
 	}
 
 	public String getNombre() {
@@ -96,10 +117,6 @@ public class Paciente {
 
 	public String getEnfermedadCronica() {
 		return enfermedadCronica;
-	}
-
-	public PersonalMedico getMedicoTratante() {
-		return medicoTratante;
 	}
 
 	public boolean contrasenaCorrecta(String contrasena) {

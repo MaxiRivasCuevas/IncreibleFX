@@ -25,31 +25,6 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 		this.vacaciones = vacaciones;
 	}
 
-	public void despedir(Funcionario funcionario) {
-		// TODO - implement PersonalAdmin.despedir
-		throw new UnsupportedOperationException();
-	}
-
-	public void calcularFiniquito(String historial) {
-		// TODO - implement PersonalAdmin.calcularFiniquito
-		throw new UnsupportedOperationException();
-	}
-
-	public void despedir(Funcionario funcionario, String infoEmpresa) {
-		// TODO - implement PersonalAdmin.despedir
-		throw new UnsupportedOperationException();
-	}
-
-	public void cambiarSueldo(Funcionario funcionario) {
-		// TODO - implement PersonalAdmin.cambiarSueldo
-		throw new UnsupportedOperationException();
-	}
-
-	public void contratar() {
-		// TODO - implement PersonalAdmin.contratar
-		throw new UnsupportedOperationException();
-	}
-
 	public int getVacaciones() {
 		return vacaciones;
 	}
@@ -80,11 +55,6 @@ public class PersonalAdmin extends Funcionario implements PersonalInterno {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public int inscribir(int nivelAcceso) {
-		return 0;
 	}
 
 	@Override

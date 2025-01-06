@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.gestionclinica.VisualizacionHistorialController">
+    <children>
+        <AnchorPane prefHeight="330.0" prefWidth="433.0" style="-fx-background-color: #806600;">
+            <children>
+                <Label layoutX="33.0" layoutY="21.0" text="Historial:" textFill="#ece8e8" />
+                <Label fx:id="lableHistorial" layoutX="33.0" layoutY="42.0" text="Null" textFill="#ece8e8" />
+                <Button fx:id="buttonCerrar" layoutX="242.0" layoutY="289.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Cerrar" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
